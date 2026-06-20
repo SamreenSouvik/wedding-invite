@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Wedding Invitation</title>
+    <!-- Tailwind CSS for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for elegant typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        .font-serif-elegant { font-family: 'Playfair Display', serif; }
+        .font-cursive { font-family: 'Great Vibes', cursive; }
+        .font-sans-clean { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#faf8f5] font-sans-clean text-stone-800">
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col items-center justify-center text-center px-4 bg-gradient-to-b from-[#f3ede4] to-[#faf8f5] relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#8c7853_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <h1 class="font-cursive text-7xl md:text-9xl text-[#8c7853] mb-4 animate-fade-in">Samreen & Souvik</h1>
+        <p class="font-serif-elegant text-xl md:text-2xl tracking-widest uppercase text-stone-600 mb-8">Are getting married</p>
+        <p class="font-serif-elegant text-lg md:text-xl text-stone-500 border-y border-[#8c7853]/30 py-2 px-6">February 22, 2027</p>
+    </header>
+
+    <!-- Countdown Section -->
+    <section class="py-16 bg-white shadow-sm border-y border-stone-100 text-center">
+        <h2 class="font-serif-elegant text-3xl text-[#8c7853] mb-8">Counting Down the Days</h2>
+        <div class="flex justify-center gap-4 md:gap-8 max-w-xl mx-auto px-4">
+            <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
+                <span id="days" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
+                <span class="text-xs uppercase tracking-wider text-stone-400 mt-1 block">Days</span>
+            </div>
+            <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
+                <span id="hours" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
+                <span class="text-xs uppercase tracking-wider text-stone-400 mt-1 block">Hours</span>
+            </div>
+            <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
+                <span id="minutes" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
+                <span class="text-xs uppercase tracking-wider text-stone-400 mt-1 block">Mins</span>
+            </div>
+            <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
+                <span id="seconds" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
+                <span class="text-xs uppercase tracking-wider text-stone-400 mt-1 block">Secs</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Functions Slider Section -->
+    <section class="py-20 px-4 max-w-4xl mx-auto">
+        <h2 class="font-serif-elegant text-4xl text-center text-[#8c7853] mb-12">The Wedding Schedule</h2>
+        
+        <!-- Slider Container -->
+        <div class="relative bg-white rounded-2xl shadow-xl border border-stone-100 overflow-hidden min-h-[350px] flex flex-col justify-between">
+            
+            <!-- Slides Grid (Controlled by JS) -->
+            <div class="p-8 md:p-12 flex-grow flex items-center justify-center">
+                <!-- Slide 1 -->
+                <div class="wedding-slide block text-center space-y-4">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Event 1</span>
+                    <h3 class="font-serif-elegant text-3xl text-stone-800">The Ring Ceremony</h3>
+                    <p class="text-stone-500 italic">February 22, 2027 &bull; 11:00 AM</p>
+                    <p class="text-stone-600 max-w-md mx-auto leading-relaxed">Join us as we take our first steps toward forever with a beautiful exchange of rings, surrounded by family, love, and warm wishes.</p>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="wedding-slide hidden text-center space-y-4">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Event 2</span>
+                    <h3 class="font-serif-elegant text-3xl text-stone-800">The Main Wedding Rituals</h3>
+                    <p class="text-stone-500 italic">February 22, 2027 &bull; 7:00 PM</p>
+                    <p class="text-stone-600 max-w-md mx-auto leading-relaxed">The main celebratory rituals and vows where we tie the knot. Your presence and blessings during these sacred moments mean everything to us.</p>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="wedding-slide hidden text-center space-y-4">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Event 3</span>
+                    <h3 class="font-serif-elegant text-3xl text-stone-800">Grand Reception Dinner</h3>
+                    <p class="text-stone-500 italic">February 22, 2027 &bull; 8:30 PM Onwards</p>
+                    <p class="text-stone-600 max-w-md mx-auto leading-relaxed">Raise a toast and feast with us! Celebrate our union over a delightful dinner, music, and unforgettable memories.</p>
+                </div>
+            </div>
+
+            <!-- Slider Controls -->
+            <div class="flex justify-between items-center bg-stone-50/80 px-6 py-4 border-t border-stone-100">
+                <button onclick="changeSlide(-1)" class="p-2 text-stone-500 hover:text-[#8c7853] transition-colors focus:outline-none">&larr; Previous</button>
+                <div class="flex gap-2" id="slider-dots">
+                    <!-- Dots generated dynamically via script -->
+                </div>
+                <button onclick="changeSlide(1)" class="p-2 text-stone-500 hover:text-[#8c7853] transition-colors focus:outline-none">Next &rarr;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location / Venue Section -->
+    <section class="py-20 bg-[#f3ede4] px-4">
+        <div class="max-w-4xl mx-auto text-center space-y-8">
+            <h2 class="font-serif-elegant text-4xl text-[#8c7853]">The Venue</h2>
+            <div class="space-y-2">
+                <p class="font-serif-elegant text-2xl text-stone-800">The Alcor Hotel</p>
+                <p class="text-stone-600 max-w-md mx-auto">Ramdas Bhat, Bistupur, Jamshedpur, Jharkhand 831001</p>
+            </div>
+            
+            <!-- Google Maps Embed Container -->
+            <div class="w-full h-80 md:h-[450px] rounded-2xl overflow-hidden shadow-xl border-4 border-white">
+                <!-- Embedded Map for Alcor Hotel, Jamshedpur -->
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3677.712165516089!2d86.17726917604313!3d22.8130836234394!2m3!1f0!2f0!3f0!3m2!1i1024!2i1024!2i500!3m2!1m1s0x39f5e305e7e137f7%3A0xc345da577ee6512d!2sThe%20Alcor%20Hotel!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe >
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 text-center text-stone-400 text-sm">
+        <p>Made with &hearts; &bull; Looking forward to celebrating with you.</p>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // 1. COUNTDOWN TIMER
+        // Target Date: Feb 22, 2027 00:00:00
+        const targetDate = new Date("February 22, 2027 00:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                document.getElementById("countdown-container").innerHTML = "<p class='text-2xl text-[#8c7853] font-serif-elegant'>The Big Day is Here!</p>";
+                return;
+            }
+
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+
+        // 2. SLIDER MECHANISM
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.wedding-slide');
+        const dotsContainer = document.getElementById('slider-dots');
+
+        // Create navigation dots dynamically
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = `w-2 h-2 rounded-full transition-all duration-300 ${i === 0 ? 'bg-[#8c7853] w-4' : 'bg-stone-300'}`;
+            dot.id = `dot-${i}`;
+            dotsContainer.appendChild(dot);
+        });
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.add('hidden');
+                const dot = document.getElementById(`dot-${i}`);
+                if (dot) {
+                    dot.classList.remove('bg-[#8c7853]', 'w-4');
+                    dot.classList.add('bg-stone-300');
+                }
+            });
+
+            slides[index].classList.remove('hidden');
+            const activeDot = document.getElementById(`dot-${index}`);
+            if (activeDot) {
+                activeDot.classList.add('bg-[#8c7853]', 'w-4');
+                activeDot.classList.remove('bg-stone-300');
+            }
+        }
+
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            if (currentSlideIndex >= slides.length) currentSlideIndex = 0;
+            if (currentSlideIndex < 0) currentSlideIndex = slides.length - 1;
+            showSlide(currentSlideIndex);
+        }
+    </script>
+</body>
+</html>
