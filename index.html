@@ -138,7 +138,6 @@
 
         .scratch-card { position: relative; background: linear-gradient(180deg, #fdf7f0 0%, #fff6ea 100%); border-radius: 2rem; overflow: hidden; box-shadow: 0 35px 70px rgba(0,0,0,0.1); }
         .scratch-card .scratch-hint { position: absolute; z-index: 6; left: 50%; top: 24px; transform: translateX(-50%); text-align: center; pointer-events: none; color: #fff; text-shadow: 0 0 18px rgba(0,0,0,0.35); }
-        .scratch-card canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 4; touch-action: none; }
         .scratch-card .scratch-content { position: relative; z-index: 5; padding-top: 5rem; }
         .scratch-card .save-date-label { font-size: 0.95rem; letter-spacing: 0.35em; text-transform: uppercase; color: #b37d4f; opacity: 0.95; }
         .scratch-card .save-date-title { font-family: 'Great Vibes', cursive; font-size: 4rem; letter-spacing: 0.08em; font-weight: 700; color: #8c7853; margin-top: 0.75rem; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
@@ -191,25 +190,8 @@
                 <div class="logo-border pre-enter" id="logo-border"></div>
                 <img id="hero-logo" src="images/Log.jpeg" alt="Wedding Logo" class="w-full h-auto object-contain rounded-3xl pre-enter" />
             </div>
-            <div class="text-center">
-                <h1 id="hero-names" class="font-cursive text-5xl md:text-7xl lg:text-8xl text-white mb-4 leading-tight pre-enter">Samreen & Souvik</h1>
-                <p id="hero-date" class="font-serif-elegant text-lg md:text-xl text-white/90 py-3 px-8 mx-auto inline-block pre-enter">February 22, 2027</p>
-            </div>
         </div>
     </header>
-
-    <!-- Song Player Section -->
-    <section class="py-12 bg-[#fff8f2] px-4">
-        <div class="max-w-3xl mx-auto text-center rounded-3xl bg-[#fff1e4] p-8 shadow-lg">
-            <h2 class="font-serif-elegant text-3xl text-[#8c7853] mb-4">A Song for Our Celebration</h2>
-            <p class="text-stone-600 max-w-2xl mx-auto mb-6">Enjoy a wedding song while you explore the invitation. Replace the placeholder audio file with your chosen track in the <code>audio/</code> folder.</p>
-            <audio id="wedding-song" autoplay muted playsinline preload="auto" class="hidden">
-                <source src="audio/song.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-            <p class="text-stone-600 max-w-2xl mx-auto">The wedding song will begin automatically when the page loads.</p>
-        </div>
-    </section>
 
     <!-- Countdown Section -->
     <section class="py-16 bg-white shadow-sm border-y border-stone-100 text-center">
@@ -217,15 +199,14 @@
             <div class="scratch-card mx-auto max-w-3xl rounded-[2rem] p-8">
                 <div class="scratch-hint">
                     <div class="save-date-label">SAVE THE DATE</div>
-                    <div class="save-date-title">Scratch or Tap to Reveal</div>
+                    <div class="save-date-title">Click here to reveal the date</div>
                 </div>
-                <canvas id="scratch-canvas"></canvas>
                 <div class="scratch-content">
-                    <h2 class="font-serif-elegant text-3xl text-[#8c7853] mb-2">Counting Down the Days</h2>
-                    <p id="scratch-date" class="scratch-reveal-date opacity-0 transition-opacity duration-500">22nd Feb 2027</p>
-                    <button id="scratch-reveal-button" type="button" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#7a6b4a] transition">Reveal Now</button>
-                    <div class="flex justify-center gap-4 md:gap-8 max-w-xl mx-auto px-4">
-                        <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
+                    <button id="scratch-reveal-button" type="button" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#7a6b4a] transition">Reveal Date</button>
+                    <div id="countdown-wrapper" class="mt-10 opacity-0 transition-opacity duration-500">
+                        <p id="scratch-date" class="scratch-reveal-date opacity-0 text-lg text-[#9a6f4b] mb-6">22nd Feb 2027</p>
+                        <div class="flex justify-center gap-4 md:gap-8 max-w-xl mx-auto px-4">
+                            <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
                             <span id="days" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
                             <span class="text-xs uppercase tracking-wider text-stone-400 mt-1 block">Days</span>
                         </div>
@@ -242,7 +223,8 @@
                             <span class="text-xs uppercase tracking-wider text-stone-400 mt-1 block">Secs</span>
                         </div>
                     </div>
-                    <p class="text-stone-600 mt-6">Scratch the overlay to reveal the countdown and the date.</p>
+                    </div>
+                    <p class="text-stone-600 mt-6">Click the button once to reveal the date and start the countdown.</p>
                     <p id="scratch-status" class="scratch-success">Great! The countdown is revealed.</p>
                 </div>
             </div>
@@ -420,15 +402,20 @@
     <!-- Interactive Scripts -->
     <script>
         // 1. COUNTDOWN TIMER
-        // Marria Date: Feb 22, 2027 00:00:00
+        // Marriage Date: Feb 22, 2027 00:00:00
         const targetDate = new Date("February 22, 2027 00:00:00").getTime();
+        let countdownInterval = null;
+        let countdownStarted = false;
 
         function updateCountdown() {
             const now = new Date().getTime();
             const difference = targetDate - now;
 
             if (difference < 0) {
-                document.getElementById("countdown-container").innerHTML = "<p class='text-2xl text-[#8c7853] font-serif-elegant'>The Big Day is Here!</p>";
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
                 return;
             }
 
@@ -442,15 +429,35 @@
             document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
             document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
         }
-        setInterval(updateCountdown, 1000);
-        updateCountdown(); // Initial call
 
-        // 2. INTRO DOOR + AUDIO START
+        function revealCountdown() {
+            if (countdownStarted) return;
+            countdownStarted = true;
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+
+            const countdownWrapper = document.getElementById('countdown-wrapper');
+            const scratchStatus = document.getElementById('scratch-status');
+            const scratchDate = document.getElementById('scratch-date');
+            const revealBtn = document.getElementById('scratch-reveal-button');
+
+            if (countdownWrapper) countdownWrapper.classList.remove('opacity-0');
+            if (scratchDate) scratchDate.classList.remove('opacity-0');
+            if (scratchStatus) {
+                scratchStatus.style.display = 'block';
+                scratchStatus.classList.add('revealed');
+            }
+            if (revealBtn) {
+                revealBtn.disabled = true;
+                revealBtn.textContent = 'Date Revealed';
+            }
+        }
+
+        // 2. INTRO DOOR START
         const introOverlay = document.getElementById('intro-overlay');
         const introDoor = document.getElementById('intro-door');
         const mainContent = document.getElementById('main-content');
         const introStart = document.getElementById('intro-start');
-        const weddingSong = document.getElementById('wedding-song');
 
         function startWeddingExperience() {
             const left = document.getElementById('door-left');
@@ -459,12 +466,6 @@
             if (left && right) {
                 left.classList.add('open');
                 right.classList.add('open');
-            }
-            if (weddingSong) {
-                weddingSong.muted = false;
-                weddingSong.play().catch(() => {
-                    console.warn('Autoplay blocked by browser even after interaction.');
-                });
             }
             setTimeout(() => {
                 if (introOverlay) {
@@ -485,7 +486,7 @@
 
         // Animate hero elements sequentially after entry
         function animateHeroSequence() {
-            const seq = ['#logo-border', '#hero-logo', '#hero-names', '#hero-date'];
+            const seq = ['#logo-border', '#hero-logo'];
             seq.forEach((selector, idx) => {
                 const el = document.querySelector(selector);
                 if (!el) return;
@@ -496,105 +497,13 @@
             });
         }
 
-        function initScratchCard() {
-            const canvas = document.getElementById('scratch-canvas');
-            const status = document.getElementById('scratch-status');
+        function initRevealButton() {
             const revealBtn = document.getElementById('scratch-reveal-button');
-            const card = document.querySelector('.scratch-card');
-            if (!canvas || !card) return;
-            const ctx = canvas.getContext('2d');
-            let isDrawing = false;
-            let rect = null;
-            const radius = 44;
-            function resizeCanvas() {
-                rect = card.getBoundingClientRect();
-                const ratio = window.devicePixelRatio || 1;
-                canvas.width = rect.width * ratio;
-                canvas.height = rect.height * ratio;
-                canvas.style.width = `${rect.width}px`;
-                canvas.style.height = `${rect.height}px`;
-                ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-                drawCover();
-            }
-            function drawCover() {
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.clearRect(0, 0, rect.width, rect.height);
-                const gradient = ctx.createLinearGradient(0, 0, rect.width, rect.height);
-                gradient.addColorStop(0, '#a77855');
-                gradient.addColorStop(1, '#d9b390');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, rect.width, rect.height);
-                ctx.fillStyle = 'rgba(255,255,255,0.18)';
-                for (let i = 0; i < 80; i++) {
-                    ctx.beginPath();
-                    const x = Math.random() * rect.width;
-                    const y = Math.random() * rect.height;
-                    const r = Math.random() * 3 + 1.5;
-                    ctx.arc(x, y, r, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                ctx.font = 'bold 48px Great Vibes, cursive';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'rgba(255,255,255,0.95)';
-                ctx.fillText('SAVE THE DATE', rect.width / 2, rect.height / 2 - 24);
-                ctx.font = '16px Poppins, sans-serif';
-                ctx.fillText('Scratch to reveal the countdown', rect.width / 2, rect.height / 2 + 24);
-                if (status) status.classList.remove('revealed');
-            }
-            function scratchAt(x, y) {
-                ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-                ctx.fill();
-                ctx.globalCompositeOperation = 'source-over';
-                checkReveal();
-            }
-            function toCanvasCoords(event) {
-                const x = event.clientX - rect.left;
-                const y = event.clientY - rect.top;
-                return { x, y };
-            }
-            function revealScratch() {
-                if (status) status.classList.add('revealed');
-                const dateLabel = document.getElementById('scratch-date');
-                if (dateLabel) dateLabel.classList.remove('opacity-0');
-                canvas.style.pointerEvents = 'none';
-                canvas.style.transition = 'opacity 0.5s ease';
-                canvas.style.opacity = '0';
-            }
-            function checkReveal() {
-                const image = ctx.getImageData(0, 0, rect.width, rect.height);
-                let cleared = 0;
-                const total = image.data.length / 4;
-                for (let i = 3; i < image.data.length; i += 4) {
-                    if (image.data[i] === 0) cleared += 1;
-                }
-                if (cleared / total > 0.12) {
-                    revealScratch();
-                }
-            }
-            canvas.addEventListener('pointerdown', (event) => {
-                isDrawing = true;
-                canvas.setPointerCapture(event.pointerId);
-                const { x, y } = toCanvasCoords(event);
-                scratchAt(x, y);
-            });
-            canvas.addEventListener('pointermove', (event) => {
-                if (!isDrawing) return;
-                const { x, y } = toCanvasCoords(event);
-                scratchAt(x, y);
-            });
-            canvas.addEventListener('pointerup', () => { isDrawing = false; });
-            canvas.addEventListener('pointerleave', () => { isDrawing = false; });
-            if (revealBtn) {
-                revealBtn.addEventListener('click', revealScratch);
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+            if (!revealBtn) return;
+            revealBtn.addEventListener('click', revealCountdown);
         }
 
-        window.addEventListener('load', initScratchCard);
+        window.addEventListener('load', initRevealButton);
 
         // RSVP form handling: simple client-side storage and UI feedback
         const rsvpForm = document.getElementById('rsvp-form');
