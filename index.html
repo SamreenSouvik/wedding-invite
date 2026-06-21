@@ -135,6 +135,17 @@
         .logo-container { position: relative; display: block; }
         .logo-border { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(0.8); width: calc(100% + 36px); height: calc(100% + 36px); border-radius: 1rem; border: 3px solid rgba(255,255,255,0.0); box-shadow: 0 10px 30px rgba(0,0,0,0.12); opacity: 0; transition: transform 420ms cubic-bezier(.2,.9,.2,1), opacity 360ms ease, border-color 420ms ease; }
         .logo-border.show { transform: translate(-50%,-50%) scale(1); opacity: 1; border-color: rgba(255,255,255,0.95); }
+
+        .scratch-card { position: relative; background: linear-gradient(180deg, #fdf7f0 0%, #fff6ea 100%); border-radius: 2rem; overflow: hidden; box-shadow: 0 35px 70px rgba(0,0,0,0.1); }
+        .scratch-card .scratch-hint { position: absolute; z-index: 6; left: 50%; top: 24px; transform: translateX(-50%); text-align: center; pointer-events: none; color: #fff; text-shadow: 0 0 18px rgba(0,0,0,0.35); }
+        .scratch-card canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 4; touch-action: none; }
+        .scratch-card .scratch-content { position: relative; z-index: 5; padding-top: 5rem; }
+        .scratch-card .save-date-label { font-size: 0.95rem; letter-spacing: 0.35em; text-transform: uppercase; color: #b37d4f; opacity: 0.95; }
+        .scratch-card .save-date-title { font-family: 'Great Vibes', cursive; font-size: 4rem; letter-spacing: 0.08em; font-weight: 700; color: #8c7853; margin-top: 0.75rem; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
+        .scratch-card .scratch-reveal-date { margin-top: 0.75rem; font-size: 1rem; color: #9a6f4b; opacity: 0.8; }
+        #scratch-reveal-button { position: relative; z-index: 5; }
+        .scratch-card .scratch-success { display: none; margin-top: 1rem; color: #116b4a; font-weight: 600; }
+        .scratch-card.revealed .scratch-success { display: block; }
     </style>
 </head>
 <body class="bg-[#ffad5f] font-sans-clean text-white">
@@ -164,7 +175,9 @@
             <div class="intro-door-content">
                 <h1 class="font-cursive text-5xl md:text-6xl lg:text-7xl text-white mb-4">Samreen & Souvik</h1>
                 <p class="text-white/80 mb-8">Begin the wedding entry and enjoy the reveal animation when you tap the logo.</p>
-                <button id="intro-start" class="intro-door-button">Enter</button>
+                <button id="intro-start" class="intro-door-button" aria-label="Open the door">
+                    <img src="images/IntialsLogo.png" alt="Initials Logo" class="w-16 h-16 object-contain" />
+                </button>
             </div>
         </div>
     </div>
@@ -204,12 +217,13 @@
             <div class="scratch-card mx-auto max-w-3xl rounded-[2rem] p-8">
                 <div class="scratch-hint">
                     <div class="save-date-label">SAVE THE DATE</div>
-                    <div class="save-date-title">Scratch to Reveal</div>
+                    <div class="save-date-title">Scratch or Tap to Reveal</div>
                 </div>
                 <canvas id="scratch-canvas"></canvas>
                 <div class="scratch-content">
                     <h2 class="font-serif-elegant text-3xl text-[#8c7853] mb-2">Counting Down the Days</h2>
                     <p id="scratch-date" class="scratch-reveal-date opacity-0 transition-opacity duration-500">22nd Feb 2027</p>
+                    <button id="scratch-reveal-button" type="button" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#7a6b4a] transition">Reveal Now</button>
                     <div class="flex justify-center gap-4 md:gap-8 max-w-xl mx-auto px-4">
                         <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
                             <span id="days" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
@@ -485,12 +499,13 @@
         function initScratchCard() {
             const canvas = document.getElementById('scratch-canvas');
             const status = document.getElementById('scratch-status');
+            const revealBtn = document.getElementById('scratch-reveal-button');
             const card = document.querySelector('.scratch-card');
             if (!canvas || !card) return;
             const ctx = canvas.getContext('2d');
             let isDrawing = false;
             let rect = null;
-            const radius = 28;
+            const radius = 44;
             function resizeCanvas() {
                 rect = card.getBoundingClientRect();
                 const ratio = window.devicePixelRatio || 1;
@@ -540,6 +555,14 @@
                 const y = event.clientY - rect.top;
                 return { x, y };
             }
+            function revealScratch() {
+                if (status) status.classList.add('revealed');
+                const dateLabel = document.getElementById('scratch-date');
+                if (dateLabel) dateLabel.classList.remove('opacity-0');
+                canvas.style.pointerEvents = 'none';
+                canvas.style.transition = 'opacity 0.5s ease';
+                canvas.style.opacity = '0';
+            }
             function checkReveal() {
                 const image = ctx.getImageData(0, 0, rect.width, rect.height);
                 let cleared = 0;
@@ -547,13 +570,8 @@
                 for (let i = 3; i < image.data.length; i += 4) {
                     if (image.data[i] === 0) cleared += 1;
                 }
-                if (cleared / total > 0.20) {
-                    if (status) status.classList.add('revealed');
-                    const dateLabel = document.getElementById('scratch-date');
-                    if (dateLabel) dateLabel.classList.remove('opacity-0');
-                    canvas.style.pointerEvents = 'none';
-                    canvas.style.transition = 'opacity 0.8s ease';
-                    canvas.style.opacity = '0';
+                if (cleared / total > 0.12) {
+                    revealScratch();
                 }
             }
             canvas.addEventListener('pointerdown', (event) => {
@@ -569,6 +587,9 @@
             });
             canvas.addEventListener('pointerup', () => { isDrawing = false; });
             canvas.addEventListener('pointerleave', () => { isDrawing = false; });
+            if (revealBtn) {
+                revealBtn.addEventListener('click', revealScratch);
+            }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
         }
