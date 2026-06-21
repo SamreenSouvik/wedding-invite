@@ -108,9 +108,48 @@
         #main-content.visible {
             opacity: 1;
         }
+
+        /* Staggered reveal for hero elements after doors open */
+        .pre-enter { opacity: 0; transform: translateY(18px) scale(0.99); transition: opacity 600ms ease, transform 650ms cubic-bezier(.2,.9,.2,1); }
+        .revealed { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* Global moving sparkles across the site */
+        #global-sparkles { position: fixed; inset: 0; pointer-events: none; z-index: 10; overflow: hidden; }
+        .g-sparkle { position: absolute; width: 8px; height: 8px; border-radius: 9999px; background: radial-gradient(circle at 30% 30%, #fff, #ffd9b3 60%); filter: blur(0.6px) drop-shadow(0 0 8px rgba(255,220,160,0.9)); opacity: 0.85; animation: gfloat linear infinite; }
+        .g-sparkle.s1 { left: 6%; top: 10%; animation-duration: 9s; animation-delay: 0s; }
+        .g-sparkle.s2 { left: 22%; top: 40%; animation-duration: 12s; animation-delay: 1.5s; }
+        .g-sparkle.s3 { left: 60%; top: 18%; animation-duration: 11s; animation-delay: 0.6s; }
+        .g-sparkle.s4 { left: 82%; top: 62%; animation-duration: 13s; animation-delay: 0.9s; }
+        .g-sparkle.s5 { left: 40%; top: 72%; animation-duration: 10s; animation-delay: 2.1s; }
+        .g-sparkle.s6 { left: 72%; top: 30%; animation-duration: 14s; animation-delay: 0.2s; }
+        .g-sparkle.s7 { left: 12%; top: 78%; animation-duration: 16s; animation-delay: 1s; }
+        .g-sparkle.s8 { left: 52%; top: 48%; animation-duration: 8s; animation-delay: 0.4s; }
+
+        @keyframes gfloat {
+            0% { transform: translateY(0) scale(0.8); opacity: 0.6; }
+            50% { transform: translateY(-40px) scale(1.25); opacity: 1; }
+            100% { transform: translateY(10px) scale(0.9); opacity: 0.5; }
+        }
+
+        /* Logo border and initials */
+        .logo-container { position: relative; display: block; }
+        .logo-border { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(0.8); width: calc(100% + 36px); height: calc(100% + 36px); border-radius: 1rem; border: 3px solid rgba(255,255,255,0.0); box-shadow: 0 10px 30px rgba(0,0,0,0.12); opacity: 0; transition: transform 420ms cubic-bezier(.2,.9,.2,1), opacity 360ms ease, border-color 420ms ease; }
+        .logo-border.show { transform: translate(-50%,-50%) scale(1); opacity: 1; border-color: rgba(255,255,255,0.95); }
+        .hero-initials { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(0.6); width: 84px; height: 84px; border-radius: 9999px; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.12); border: 2px solid rgba(255,255,255,0.9); opacity: 0; transition: opacity 360ms ease, transform 420ms cubic-bezier(.2,.9,.2,1); }
+        .hero-initials.show { opacity: 1; transform: translate(-50%,-50%) scale(1); }
     </style>
 </head>
 <body class="bg-[#ffad5f] font-sans-clean text-white">
+    <div id="global-sparkles" aria-hidden="true">
+        <span class="g-sparkle s1"></span>
+        <span class="g-sparkle s2"></span>
+        <span class="g-sparkle s3"></span>
+        <span class="g-sparkle s4"></span>
+        <span class="g-sparkle s5"></span>
+        <span class="g-sparkle s6"></span>
+        <span class="g-sparkle s7"></span>
+        <span class="g-sparkle s8"></span>
+    </div>
 
     <!-- Intro Door Overlay -->
     <div id="intro-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-[#ffad5f] px-4 py-8">
@@ -139,12 +178,14 @@
     <!-- Hero Section -->
     <header class="min-h-screen bg-[#ffad5f] flex items-center justify-center px-4 py-8">
         <div class="w-full max-w-6xl flex flex-col items-center justify-center gap-8">
-            <div class="w-full rounded-3xl bg-[#ffad5f]">
-                <img src="images/Log.jpeg" alt="Wedding Logo" class="w-full h-auto object-contain rounded-3xl" />
+            <div class="w-full rounded-3xl bg-[#ffad5f] logo-container">
+                <div class="logo-border pre-enter" id="logo-border"></div>
+                <img id="hero-logo" src="images/Log.jpeg" alt="Wedding Logo" class="w-full h-auto object-contain rounded-3xl pre-enter" />
+                <div id="hero-initials" class="hero-initials"><img src="images/IntialsLogo.png" alt="Initials" style="width:58px;height:auto;border-radius:9999px;" onerror="this.onerror=null; this.src='images/Log.jpeg'"/></div>
             </div>
             <div class="text-center">
-                <h1 class="font-cursive text-5xl md:text-7xl lg:text-8xl text-white mb-4 leading-tight">Samreen & Souvik</h1>
-                <p class="font-serif-elegant text-lg md:text-xl text-white/90 py-3 px-8 mx-auto inline-block">February 22, 2027</p>
+                <h1 id="hero-names" class="font-cursive text-5xl md:text-7xl lg:text-8xl text-white mb-4 leading-tight pre-enter">Samreen & Souvik</h1>
+                <p id="hero-date" class="font-serif-elegant text-lg md:text-xl text-white/90 py-3 px-8 mx-auto inline-block pre-enter">February 22, 2027</p>
             </div>
         </div>
     </header>
@@ -319,6 +360,36 @@
     </section>
 
     <!-- Footer -->
+    <!-- RSVP Section -->
+    <section id="rsvp" class="py-16 px-4 bg-white">
+        <div class="max-w-2xl mx-auto rounded-2xl p-8 shadow-lg">
+            <h2 class="font-serif-elegant text-2xl text-[#8c7853] mb-4">RSVP</h2>
+            <p class="text-stone-600 mb-6">Please let us know if you will be attending and your arrival date.</p>
+            <form id="rsvp-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-stone-700">Full Name</label>
+                    <input id="rsvp-name" type="text" required class="mt-1 block w-full rounded-lg border border-stone-200 p-3" placeholder="Your full name" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-stone-700">Contact Number</label>
+                    <input id="rsvp-phone" type="tel" required class="mt-1 block w-full rounded-lg border border-stone-200 p-3" placeholder="e.g., +91 98xxxxxxx" />
+                </div>
+                <div class="flex items-center gap-3">
+                    <input id="rsvp-coming" type="checkbox" class="h-4 w-4" />
+                    <label for="rsvp-coming" class="text-sm text-stone-700">Yes, I will be attending</label>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-stone-700">Arrival Date</label>
+                    <input id="rsvp-date" type="date" class="mt-1 block w-full rounded-lg border border-stone-200 p-3" />
+                </div>
+                <div>
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold">Send RSVP</button>
+                </div>
+                <p id="rsvp-msg" class="text-sm text-green-600 hidden">Thanks — your RSVP has been recorded.</p>
+            </form>
+        </div>
+    </section>
+
     <footer class="py-12 text-center text-stone-400 text-sm">
         <p>Made with &hearts; &bull; Looking forward to celebrating with you.</p>
     </footer>
@@ -379,12 +450,56 @@
                 }
                 if (mainContent) {
                     mainContent.classList.add('visible');
+                    // Trigger staggered hero reveal shortly after main content becomes visible
+                    setTimeout(() => animateHeroSequence(), 260);
                 }
             }, 1100);
         }
 
         if (introStart) {
             introStart.addEventListener('click', startWeddingExperience);
+        }
+
+        // Animate hero elements sequentially after entry
+        function animateHeroSequence() {
+            const seq = ['#logo-border', '#hero-initials', '#hero-logo', '#hero-names', '#hero-date'];
+            seq.forEach((selector, idx) => {
+                const el = document.querySelector(selector);
+                if (!el) return;
+                setTimeout(() => {
+                    if (selector === '#logo-border') el.classList.add('show');
+                    else if (selector === '#hero-initials') el.classList.add('show');
+                    else el.classList.add('revealed');
+                }, 320 + idx * 260);
+            });
+        }
+
+        // RSVP form handling: simple client-side storage and UI feedback
+        const rsvpForm = document.getElementById('rsvp-form');
+        if (rsvpForm) {
+            rsvpForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('rsvp-name').value.trim();
+                const phone = document.getElementById('rsvp-phone').value.trim();
+                const coming = document.getElementById('rsvp-coming').checked;
+                const date = document.getElementById('rsvp-date').value || null;
+                if (!name || !phone) {
+                    alert('Please provide name and contact number.');
+                    return;
+                }
+                const entry = { name, phone, coming, date, timestamp: new Date().toISOString() };
+                try {
+                    const list = JSON.parse(localStorage.getItem('rsvps') || '[]');
+                    list.push(entry);
+                    localStorage.setItem('rsvps', JSON.stringify(list));
+                } catch (err) {
+                    console.warn('Could not save RSVP locally', err);
+                }
+                const msg = document.getElementById('rsvp-msg');
+                if (msg) { msg.classList.remove('hidden'); }
+                rsvpForm.reset();
+                console.log('RSVP recorded', entry);
+            });
         }
 
         // 3. SLIDER MECHANISM
