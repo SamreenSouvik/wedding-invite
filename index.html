@@ -13,39 +13,88 @@
         .font-cursive { font-family: 'Great Vibes', cursive; }
         .font-sans-clean { font-family: 'Poppins', sans-serif; }
 
-        .intro-card {
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            transition: transform 0.8s ease;
+        .intro-door {
             position: relative;
             overflow: hidden;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background-image: url('images/OpenigCardGanesh.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 2rem;
+            box-shadow: 0 35px 70px rgba(0,0,0,0.18);
+            transition: transform 0.8s ease, opacity 0.8s ease;
         }
 
-        .intro-card.animate-flip {
-            transform: rotateY(180deg);
+        .intro-door::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.45) 80%);
+        }
+
+        .intro-door.animate-open {
+            transform: scale(1.03) translateY(-10px);
+            opacity: 0.96;
+        }
+
+        .intro-door-content {
+            position: relative;
+            z-index: 2;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .intro-door-button {
+            width: 110px;
+            height: 110px;
+            border-radius: 9999px;
+            border: 3px solid rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .intro-door-button:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.25);
+        }
+
+        .intro-door-button img {
+            width: 60px;
+            height: auto;
         }
 
         .sparkle {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 9999px;
-            background: rgba(255, 255, 255, 0.9);
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            background: rgba(255, 255, 255, 0.95);
+            filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.8));
             opacity: 0;
-            animation: sparkle 1.5s ease-in-out infinite;
+            animation: sparkle 1.6s ease-in-out infinite;
         }
 
         .sparkle:nth-child(1) { left: 10%; top: 15%; animation-delay: 0s; }
-        .sparkle:nth-child(2) { left: 80%; top: 20%; animation-delay: 0.2s; }
-        .sparkle:nth-child(3) { left: 20%; top: 70%; animation-delay: 0.4s; }
-        .sparkle:nth-child(4) { left: 82%; top: 75%; animation-delay: 0.6s; }
-        .sparkle:nth-child(5) { left: 50%; top: 40%; animation-delay: 0.8s; }
-        .sparkle:nth-child(6) { left: 65%; top: 55%; animation-delay: 1s; }
+        .sparkle:nth-child(2) { left: 78%; top: 17%; animation-delay: 0.15s; }
+        .sparkle:nth-child(3) { left: 18%; top: 68%; animation-delay: 0.3s; }
+        .sparkle:nth-child(4) { left: 82%; top: 72%; animation-delay: 0.45s; }
+        .sparkle:nth-child(5) { left: 48%; top: 42%; animation-delay: 0.6s; }
+        .sparkle:nth-child(6) { left: 65%; top: 56%; animation-delay: 0.75s; }
 
         @keyframes sparkle {
-            0%, 100% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.4); opacity: 1; }
+            0%, 100% { transform: scale(0.6); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 1; }
         }
 
         #main-content {
@@ -59,24 +108,22 @@
 </head>
 <body class="bg-[#ffad5f] font-sans-clean text-white">
 
-    <!-- Intro Card Overlay -->
+    <!-- Intro Door Overlay -->
     <div id="intro-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-[#ffad5f] px-4 py-8">
-        <div id="intro-card" class="intro-card w-full max-w-xl rounded-3xl bg-white/95 p-8 text-center shadow-2xl backdrop-blur-sm border border-white/70">
+        <div id="intro-door" class="intro-door w-full max-w-5xl">
             <span class="sparkle"></span>
             <span class="sparkle"></span>
             <span class="sparkle"></span>
             <span class="sparkle"></span>
             <span class="sparkle"></span>
             <span class="sparkle"></span>
-            <p class="text-sm uppercase tracking-[0.35em] text-[#c05800] mb-4">Welcome to our wedding invitation</p>
-            <h1 class="font-cursive text-4xl md:text-5xl text-[#8c7853] mb-4">Samreen & Souvik</h1>
-            <p class="text-stone-600 mb-8">Tap to open the digital card and start the celebration music.</p>
-            <button id="intro-start" class="inline-flex items-center gap-3 rounded-full bg-[#8c7853] px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[#6f5f44]">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor">
-                    <path d="M3 10a1 1 0 0 1 1-1h2.8l4.6-4.6A1 1 0 0 1 12.4 4v16a1 1 0 0 1-1.6.8L6.8 15H4a1 1 0 0 1-1-1v-3Zm15.7 1.7a1 1 0 0 0 0-1.4 5.5 5.5 0 0 0-7.8 0 1 1 0 0 0 1.4 1.4 3.5 3.5 0 0 1 4.9 0 1 1 0 0 0 1.5 0Zm2.1 3.4a1 1 0 0 0-1.4 0 9 9 0 0 0-12.8 0 1 1 0 0 0 1.4 1.4 7 7 0 0 1 9.9 0 1 1 0 0 0 1.5 0Z" />
-                </svg>
-                Open the Card
-            </button>
+            <div class="intro-door-content">
+                <h1 class="font-cursive text-5xl md:text-6xl lg:text-7xl text-white mb-4">Samreen & Souvik</h1>
+                <p class="text-white/80 mb-8">Begin the wedding entry and play the music by tapping the initials below.</p>
+                <button id="intro-start" class="intro-door-button">
+                    <img src="images/IntialsLogo.png" alt="Initials Logo" />
+                </button>
+            </div>
         </div>
     </div>
 
@@ -297,16 +344,16 @@
         setInterval(updateCountdown, 1000);
         updateCountdown(); // Initial call
 
-        // 2. INTRO CARD + AUDIO START
+        // 2. INTRO DOOR + AUDIO START
         const introOverlay = document.getElementById('intro-overlay');
-        const introCard = document.getElementById('intro-card');
+        const introDoor = document.getElementById('intro-door');
         const mainContent = document.getElementById('main-content');
         const introStart = document.getElementById('intro-start');
         const weddingSong = document.getElementById('wedding-song');
 
         function startWeddingExperience() {
-            if (introCard) {
-                introCard.classList.add('animate-flip');
+            if (introDoor) {
+                introDoor.classList.add('animate-open');
             }
             if (weddingSong) {
                 weddingSong.muted = false;
@@ -322,7 +369,7 @@
                 if (mainContent) {
                     mainContent.classList.add('visible');
                 }
-            }, 800);
+            }, 900);
         }
 
         if (introStart) {
