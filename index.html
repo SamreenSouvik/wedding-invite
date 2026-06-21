@@ -138,13 +138,42 @@
 
         .scratch-card { position: relative; background: linear-gradient(180deg, #fdf7f0 0%, #fff6ea 100%); border-radius: 2rem; overflow: hidden; box-shadow: 0 35px 70px rgba(0,0,0,0.1); }
         .scratch-card .scratch-hint { position: absolute; z-index: 6; left: 50%; top: 24px; transform: translateX(-50%); text-align: center; pointer-events: none; color: #fff; text-shadow: 0 0 18px rgba(0,0,0,0.35); }
-        .scratch-card .scratch-content { position: relative; z-index: 5; padding-top: 5rem; }
+        .scratch-card .scratch-content { position: relative; z-index: 5; padding-top: 12rem; }
         .scratch-card .save-date-label { font-size: 0.95rem; letter-spacing: 0.35em; text-transform: uppercase; color: #b37d4f; opacity: 0.95; }
         .scratch-card .save-date-title { font-family: 'Great Vibes', cursive; font-size: 4rem; letter-spacing: 0.08em; font-weight: 700; color: #8c7853; margin-top: 0.75rem; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
-        .scratch-card .scratch-reveal-date { margin-top: 0.75rem; font-size: 1rem; color: #9a6f4b; opacity: 0.8; }
+        .scratch-card .scratch-reveal-date {
+            margin-top: 0.75rem;
+            font-size: 2rem;
+            color: #8c7853;
+            opacity: 0;
+            transform: translateY(24px) scale(0.95);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scratch-card .scratch-reveal-date.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .countdown-panel {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: max-height 0.6s ease, opacity 0.6s ease, transform 0.6s ease;
+        }
+        .countdown-panel.revealed {
+            max-height: 1000px;
+            opacity: 1;
+            transform: translateY(0);
+        }
         #scratch-reveal-button { position: relative; z-index: 5; }
-        .scratch-card .scratch-success { display: none; margin-top: 1rem; color: #116b4a; font-weight: 600; }
-        .scratch-card.revealed .scratch-success { display: block; }
+        #scratch-reveal-button:hover {
+            box-shadow: 0 0 30px rgba(255, 225, 175, 0.55), 0 0 60px rgba(255, 196, 125, 0.25);
+            transform: translateY(-1px);
+        }
+        #scratch-reveal-button:focus-visible {
+            outline: 2px solid rgba(255, 246, 215, 0.9);
+            outline-offset: 4px;
+        }
     </style>
 </head>
 <body class="bg-[#ffad5f] font-sans-clean text-white">
@@ -172,14 +201,15 @@
             <span class="sparkle"></span>
             <span class="sparkle"></span>
             <div class="intro-door-content">
-                <h1 class="font-cursive text-5xl md:text-6xl lg:text-7xl text-white mb-4">Samreen & Souvik</h1>
-                <p class="text-white/80 mb-8">Begin the wedding entry and enjoy the reveal animation when you tap the logo.</p>
+                <p class="intro-text text-xl md:text-2xl lg:text-3xl text-[#ffe6b8] font-semibold leading-tight max-w-3xl bg-white/10 px-6 py-4 rounded-3xl border border-white/20 shadow-lg">From Dhol to Dhak, from Ardaas to Shubho Drishti — this is our love story.</p>
                 <button id="intro-start" class="intro-door-button" aria-label="Open the door">
                     <img src="images/IntialsLogo.png" alt="Initials Logo" class="w-16 h-16 object-contain" />
                 </button>
             </div>
         </div>
     </div>
+
+    <audio id="wedding-song" src="audio/song.mp3" preload="auto"></audio>
 
     <div id="main-content" class="opacity-0 transition-opacity duration-700">
 
@@ -198,13 +228,13 @@
         <div class="max-w-3xl mx-auto px-4">
             <div class="scratch-card mx-auto max-w-3xl rounded-[2rem] p-8">
                 <div class="scratch-hint">
-                    <div class="save-date-label">SAVE THE DATE</div>
-                    <div class="save-date-title">Click here to reveal the date</div>
+                    <div class="save-date-label text-4xl md:text-5xl font-semibold">SAVE THE DATE</div>
+                    <div class="save-date-title text-lg md:text-xl mt-2">Click below to reveal the date</div>
                 </div>
                 <div class="scratch-content">
                     <button id="scratch-reveal-button" type="button" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#7a6b4a] transition">Reveal Date</button>
-                    <div id="countdown-wrapper" class="mt-10 opacity-0 transition-opacity duration-500">
-                        <p id="scratch-date" class="scratch-reveal-date opacity-0 text-lg text-[#9a6f4b] mb-6">22nd Feb 2027</p>
+                    <div id="countdown-wrapper" class="countdown-panel mt-10 opacity-0">
+                        <p id="scratch-date" class="scratch-reveal-date text-3xl md:text-4xl font-serif-elegant tracking-[0.08em] text-[#8c7853] mb-6">22nd Feb 2027</p>
                         <div class="flex justify-center gap-4 md:gap-8 max-w-xl mx-auto px-4">
                             <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
                             <span id="days" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
@@ -224,8 +254,6 @@
                         </div>
                     </div>
                     </div>
-                    <p class="text-stone-600 mt-6">Click the button once to reveal the date and start the countdown.</p>
-                    <p id="scratch-status" class="scratch-success">Great! The countdown is revealed.</p>
                 </div>
             </div>
         </div>
@@ -437,16 +465,11 @@
             countdownInterval = setInterval(updateCountdown, 1000);
 
             const countdownWrapper = document.getElementById('countdown-wrapper');
-            const scratchStatus = document.getElementById('scratch-status');
             const scratchDate = document.getElementById('scratch-date');
             const revealBtn = document.getElementById('scratch-reveal-button');
 
-            if (countdownWrapper) countdownWrapper.classList.remove('opacity-0');
-            if (scratchDate) scratchDate.classList.remove('opacity-0');
-            if (scratchStatus) {
-                scratchStatus.style.display = 'block';
-                scratchStatus.classList.add('revealed');
-            }
+            if (countdownWrapper) countdownWrapper.classList.add('revealed');
+            if (scratchDate) scratchDate.classList.add('revealed');
             if (revealBtn) {
                 revealBtn.disabled = true;
                 revealBtn.textContent = 'Date Revealed';
@@ -458,6 +481,7 @@
         const introDoor = document.getElementById('intro-door');
         const mainContent = document.getElementById('main-content');
         const introStart = document.getElementById('intro-start');
+        const weddingSong = document.getElementById('wedding-song');
 
         function startWeddingExperience() {
             const left = document.getElementById('door-left');
@@ -466,6 +490,12 @@
             if (left && right) {
                 left.classList.add('open');
                 right.classList.add('open');
+            }
+            if (weddingSong) {
+                weddingSong.muted = false;
+                weddingSong.play().catch(() => {
+                    console.warn('Autoplay blocked by browser even after interaction.');
+                });
             }
             setTimeout(() => {
                 if (introOverlay) {
