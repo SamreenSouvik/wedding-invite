@@ -17,62 +17,60 @@
             position: relative;
             overflow: hidden;
             min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            background-image: url('images/OpenigCardGanesh.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             border-radius: 2rem;
             box-shadow: 0 35px 70px rgba(0,0,0,0.18);
-            transition: transform 0.8s ease, opacity 0.8s ease;
         }
 
-        .intro-door::before {
-            content: '';
+        .door-panel {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.45) 80%);
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            background-image: url('images/OpenigCardGanesh.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: transform 1s cubic-bezier(.2,.9,.2,1), opacity 0.8s ease;
+            z-index: 2;
         }
 
-        .intro-door.animate-open {
-            transform: scale(1.03) translateY(-10px);
-            opacity: 0.96;
+        .door-left { left: 0; background-position: left center; transform-origin: left center; }
+        .door-right { right: 0; background-position: right center; transform-origin: right center; }
+
+        .door-left.open { transform: translateX(-110%); }
+        .door-right.open { transform: translateX(110%); }
+
+        .intro-door-overlay {
+            position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.45)); z-index:1;
         }
 
         .intro-door-content {
             position: relative;
-            z-index: 2;
+            z-index: 3;
             padding: 3rem 2rem 2rem;
             text-align: center;
             color: white;
+            display:flex; flex-direction:column; align-items:center; gap:1rem;
         }
 
         .intro-door-button {
             width: 110px;
             height: 110px;
             border-radius: 9999px;
-            border: 3px solid rgba(255,255,255,0.85);
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(6px);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
             transition: transform 0.3s ease, background 0.3s ease;
         }
 
-        .intro-door-button:hover {
-            transform: translateY(-4px);
-            background: rgba(255,255,255,0.25);
-        }
+        .intro-door-button:hover { transform: translateY(-6px); background: rgba(255,255,255,0.2); }
 
-        .intro-door-button img {
-            width: 60px;
-            height: auto;
-        }
+        .intro-door-button img { width: 64px; height:auto; }
 
         .sparkle {
             position: absolute;
@@ -111,6 +109,9 @@
     <!-- Intro Door Overlay -->
     <div id="intro-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-[#ffad5f] px-4 py-8">
         <div id="intro-door" class="intro-door w-full max-w-5xl">
+            <div id="door-left" class="door-panel door-left"></div>
+            <div id="door-right" class="door-panel door-right"></div>
+            <div class="intro-door-overlay"></div>
             <span class="sparkle"></span>
             <span class="sparkle"></span>
             <span class="sparkle"></span>
@@ -121,7 +122,7 @@
                 <h1 class="font-cursive text-5xl md:text-6xl lg:text-7xl text-white mb-4">Samreen & Souvik</h1>
                 <p class="text-white/80 mb-8">Begin the wedding entry and play the music by tapping the initials below.</p>
                 <button id="intro-start" class="intro-door-button">
-                    <img src="images/IntialsLogo.png" alt="Initials Logo" />
+                    <img id="intro-logo" src="images/IntialsLogo.png" alt="Initials Logo" onerror="this.onerror=null; this.src='images/Log.jpeg'" />
                 </button>
             </div>
         </div>
@@ -352,8 +353,12 @@
         const weddingSong = document.getElementById('wedding-song');
 
         function startWeddingExperience() {
-            if (introDoor) {
-                introDoor.classList.add('animate-open');
+            const left = document.getElementById('door-left');
+            const right = document.getElementById('door-right');
+            if (introStart) { introStart.disabled = true; introStart.style.pointerEvents = 'none'; }
+            if (left && right) {
+                left.classList.add('open');
+                right.classList.add('open');
             }
             if (weddingSong) {
                 weddingSong.muted = false;
@@ -364,12 +369,12 @@
             setTimeout(() => {
                 if (introOverlay) {
                     introOverlay.classList.add('opacity-0');
-                    setTimeout(() => introOverlay.remove(), 500);
+                    setTimeout(() => introOverlay.remove(), 600);
                 }
                 if (mainContent) {
                     mainContent.classList.add('visible');
                 }
-            }, 900);
+            }, 1100);
         }
 
         if (introStart) {
