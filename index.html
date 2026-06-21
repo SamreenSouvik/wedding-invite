@@ -52,55 +52,77 @@
         </div>
     </section>
 
-    <!-- Functions Slider Section -->
+    <!-- Wedding Schedule (vertical scrollable templates) -->
     <section class="py-20 px-4 max-w-4xl mx-auto">
         <h2 class="font-serif-elegant text-4xl text-center text-[#8c7853] mb-12">The Wedding Schedule</h2>
-        
-        <!-- Slider Container -->
-        <div class="relative bg-white rounded-2xl shadow-xl border border-stone-100 overflow-hidden min-h-[350px] flex flex-col justify-between">
-            
-            <!-- Slides Grid (Controlled by JS) -->
-            <div class="p-8 md:p-12 flex-grow flex items-center justify-center">
-                <!-- Slide 1 -->
-                <div class="wedding-slide block text-center space-y-4">
-                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Event 1</span>
-                    <h3 class="font-serif-elegant text-3xl text-stone-800">The Ring Ceremony</h3>
-                    <p class="text-stone-500 italic">February 22, 2027 &bull; 11:00 AM</p>
-                    <p class="text-stone-600 max-w-md mx-auto leading-relaxed">Join us as we take our first steps toward forever with a beautiful exchange of rings, surrounded by family, love, and warm wishes.</p>
-                </div>
 
-                <!-- Slide 2 -->
-                <div class="wedding-slide hidden text-center space-y-4">
-                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Event 2</span>
-                    <h3 class="font-serif-elegant text-3xl text-stone-800">The Main Wedding Rituals</h3>
-                    <p class="text-stone-500 italic">February 22, 2027 &bull; 7:00 PM</p>
-                    <p class="text-stone-600 max-w-md mx-auto leading-relaxed">The main celebratory rituals and vows where we tie the knot. Your presence and blessings during these sacred moments mean everything to us.</p>
+        <div class="space-y-8">
+            <!-- Template: Mehendi -->
+            <article id="mehendi" class="bg-white rounded-2xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Mehendi</span>
+                    <span class="text-sm text-stone-500">20th Feb 2027 &bull; 10:00 AM</span>
                 </div>
+                <h3 class="font-serif-elegant text-2xl text-stone-800 mt-4">Mehendi Ceremony</h3>
+                <p class="text-stone-600 mt-2">Location and brief description placeholder. Update details later.</p>
+            </article>
 
-                <!-- Slide 3 -->
-                <div class="wedding-slide hidden text-center space-y-4">
-                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Event 3</span>
-                    <h3 class="font-serif-elegant text-3xl text-stone-800">Grand Reception Dinner</h3>
-                    <p class="text-stone-500 italic">February 22, 2027 &bull; 8:30 PM Onwards</p>
-                    <p class="text-stone-600 max-w-md mx-auto leading-relaxed">Raise a toast and feast with us! Celebrate our union over a delightful dinner, music, and unforgettable memories.</p>
+            <!-- Template: Aiburobhaat -->
+            <article id="aiburobhaat" class="bg-white rounded-2xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Aiburobhaat</span>
+                    <span class="text-sm text-stone-500">21st Feb 2027 &bull; 12:00 PM</span>
                 </div>
-            </div>
+                <h3 class="font-serif-elegant text-2xl text-stone-800 mt-4">Aiburobhaat</h3>
+                <p class="text-stone-600 mt-2">Location and brief description placeholder. Update details later.</p>
+            </article>
 
-            <!-- Slider Controls -->
-            <div class="flex justify-between items-center bg-stone-50/80 px-6 py-4 border-t border-stone-100">
-                <button onclick="changeSlide(-1)" class="p-2 text-stone-500 hover:text-[#8c7853] transition-colors focus:outline-none">&larr; Previous</button>
-                <div class="flex gap-2" id="slider-dots">
-                    <!-- Dots generated dynamically via script -->
+            <!-- Template: Sangeet Night -->
+            <article id="sangeet" class="bg-white rounded-2xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Sangeet Night</span>
+                    <span class="text-sm text-stone-500">21st Feb 2027 &bull; 6:00 PM</span>
                 </div>
-                <button onclick="changeSlide(1)" class="p-2 text-stone-500 hover:text-[#8c7853] transition-colors focus:outline-none">Next &rarr;</button>
-            </div>
+                <h3 class="font-serif-elegant text-2xl text-stone-800 mt-4">Sangeet Night</h3>
+                <p class="text-stone-600 mt-2">Location and brief description placeholder. Update details later.</p>
+            </article>
+
+            <!-- Template: Haldi -->
+            <article id="haldi" class="bg-white rounded-2xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Haldi</span>
+                    <span class="text-sm text-stone-500">22nd Feb 2027 &bull; 11:00 AM</span>
+                </div>
+                <h3 class="font-serif-elegant text-2xl text-stone-800 mt-4">Haldi Ceremony</h3>
+                <p class="text-stone-600 mt-2">Location and brief description placeholder. Update details later.</p>
+            </article>
+
+            <!-- Template: Varmala / Phere -->
+            <article id="varmala" class="bg-white rounded-2xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Varmala / Phere</span>
+                    <span class="text-sm text-stone-500">22nd Feb 2027 &bull; From 4:00 PM</span>
+                </div>
+                <h3 class="font-serif-elegant text-2xl text-stone-800 mt-4">Varmala & Wedding Phere</h3>
+                <p class="text-stone-600 mt-2">Location and brief description placeholder. Update details later.</p>
+            </article>
+
+            <!-- Template: Reception -->
+            <article id="reception" class="bg-white rounded-2xl shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs uppercase tracking-widest text-[#8c7853] font-semibold bg-[#8c7853]/10 px-3 py-1 rounded-full">Reception</span>
+                    <span class="text-sm text-stone-500">26th Feb 2027 &bull; 6:00 PM</span>
+                </div>
+                <h3 class="font-serif-elegant text-2xl text-stone-800 mt-4">Reception</h3>
+                <p class="text-stone-600 mt-2">Location and brief description placeholder. Update details later.</p>
+            </article>
         </div>
     </section>
 
     <!-- Location / Venue Section -->
     <section class="py-20 bg-[#f3ede4] px-4">
         <div class="max-w-4xl mx-auto text-center space-y-8">
-            <h2 class="font-serif-elegant text-4xl text-[#8c7853]">The Venue</h2>
+            <h2 class="font-serif-elegant text-4xl text-[#8c7853]">Wedding Venue</h2>
             <div class="space-y-2">
                 <p class="font-serif-elegant text-2xl text-stone-800">The Alcor Hotel</p>
                 <p class="text-stone-600 max-w-md mx-auto">Ramdas Bhat, Bistupur, Jamshedpur, Jharkhand 831001</p>
