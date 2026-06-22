@@ -139,8 +139,8 @@
         .scratch-card { position: relative; background: linear-gradient(180deg, #fdf7f0 0%, #fff6ea 100%); border-radius: 2rem; overflow: hidden; box-shadow: 0 35px 70px rgba(0,0,0,0.1); }
         .scratch-card .scratch-hint { position: absolute; z-index: 6; left: 50%; top: 24px; transform: translateX(-50%); text-align: center; pointer-events: none; color: #fff; text-shadow: 0 0 18px rgba(0,0,0,0.35); }
         .scratch-card .scratch-content { position: relative; z-index: 5; padding-top: 12rem; }
-        .scratch-card .save-date-label { font-size: 0.95rem; letter-spacing: 0.35em; text-transform: uppercase; color: #b37d4f; opacity: 0.95; }
-        .scratch-card .save-date-title { font-family: 'Great Vibes', cursive; font-size: 4rem; letter-spacing: 0.08em; font-weight: 700; color: #8c7853; margin-top: 0.75rem; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
+        .scratch-card .save-date-label { letter-spacing: 0.35em; text-transform: uppercase; color: #b37d4f; opacity: 0.95; }
+        .scratch-card .save-date-title { font-family: 'Great Vibes', cursive; letter-spacing: 0.08em; font-weight: 700; color: #8c7853; margin-top: 0.75rem; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
         .scratch-card .scratch-reveal-date {
             margin-top: 0.75rem;
             font-size: 2rem;
@@ -165,6 +165,58 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .timeline-summary {
+            position: relative;
+            padding: 1rem 0 0;
+            margin-top: 1rem;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(140, 120, 83, 0.16);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+            width: 100%;
+            padding: 1.2rem 0;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .timeline-item.right { justify-content: flex-end; }
+        .timeline-card {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            max-width: 320px;
+            background: #ffffff;
+            color: #3f3f3f;
+            border-radius: 1.75rem;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 18px 50px rgba(0,0,0,0.08);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            text-decoration: none;
+        }
+        .timeline-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 60px rgba(0,0,0,0.12);
+        }
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 9999px;
+            background: #8c7853;
+            border: 4px solid #ffffff;
+            box-shadow: 0 0 0 4px rgba(140, 120, 83, 0.16);
+            flex-shrink: 0;
+        }
+        .timeline-label { display: block; font-family: 'Playfair Display', serif; font-weight: 700; color: #8c7853; }
+        .timeline-note { display: block; font-size: 0.92rem; color: #6b6b6b; }
+        .schedule-summary-text { max-width: 640px; margin: 0 auto; }
         #scratch-reveal-button { position: relative; z-index: 5; }
         #scratch-reveal-button:hover {
             box-shadow: 0 0 30px rgba(255, 225, 175, 0.55), 0 0 60px rgba(255, 196, 125, 0.25);
@@ -232,13 +284,71 @@
         <div class="max-w-3xl mx-auto px-4">
             <div class="scratch-card mx-auto max-w-3xl rounded-[2rem] p-8">
                 <div class="scratch-hint">
-                    <div class="save-date-label text-5xl md:text-6xl font-semibold">SAVE THE DATE</div>
-                    <div class="save-date-title text-base md:text-lg mt-2">Click below to reveal the date</div>
+                    <div class="save-date-label text-4xl md:text-5xl font-semibold">SAVE THE DATE</div>
+                    <div class="save-date-title text-xl md:text-2xl mt-2">Click below to reveal the date</div>
                 </div>
                 <div class="scratch-content">
                     <button id="scratch-reveal-button" type="button" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#7a6b4a] transition">Reveal Date</button>
                     <div id="countdown-wrapper" class="countdown-panel mt-10 opacity-0">
                         <p id="scratch-date" class="scratch-reveal-date text-3xl md:text-4xl font-serif-elegant tracking-[0.08em] text-[#8c7853] mb-6">22nd Feb 2027</p>
+                        <div id="schedule-timeline-summary" class="timeline-summary mt-8">
+                            <p class="schedule-summary-text text-sm md:text-base text-stone-500 mb-6">This is the content summary of the wedding schedule. Tap any item to jump to its details below.</p>
+                            <div class="timeline-line"></div>
+                            <div class="timeline-item left">
+                                <a href="#mehendi" class="timeline-card">
+                                    <span class="timeline-dot"></span>
+                                    <span>
+                                        <span class="timeline-label">Mehendi</span>
+                                        <span class="timeline-note">20th Feb 2027 · 10:00 AM</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="timeline-item right">
+                                <a href="#aiburobhaat" class="timeline-card">
+                                    <span class="timeline-dot"></span>
+                                    <span>
+                                        <span class="timeline-label">Aiburobhaat</span>
+                                        <span class="timeline-note">21st Feb 2027 · 12:00 PM</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="timeline-item left">
+                                <a href="#sangeet" class="timeline-card">
+                                    <span class="timeline-dot"></span>
+                                    <span>
+                                        <span class="timeline-label">Sangeet Night</span>
+                                        <span class="timeline-note">21st Feb 2027 · 6:00 PM</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="timeline-item right">
+                                <a href="#haldi" class="timeline-card">
+                                    <span class="timeline-dot"></span>
+                                    <span>
+                                        <span class="timeline-label">Haldi</span>
+                                        <span class="timeline-note">22nd Feb 2027 · 11:00 AM</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="timeline-item left">
+                                <a href="#varmala" class="timeline-card">
+                                    <span class="timeline-dot"></span>
+                                    <span>
+                                        <span class="timeline-label">Varmala / Phere</span>
+                                        <span class="timeline-note">22nd Feb 2027 · 4:00 PM</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="timeline-item right">
+                                <a href="#reception" class="timeline-card">
+                                    <span class="timeline-dot"></span>
+                                    <span>
+                                        <span class="timeline-label">Reception</span>
+                                        <span class="timeline-note">26th Feb 2027 · 6:00 PM</span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
                         <div class="flex justify-center gap-4 md:gap-8 max-w-xl mx-auto px-4">
                             <div class="bg-[#fcfbf9] border border-stone-200/60 rounded-xl p-4 min-w-[70px] md:min-w-[100px] flex-1 shadow-sm">
                             <span id="days" class="font-serif-elegant text-3xl md:text-5xl block text-[#8c7853]">00</span>
@@ -392,6 +502,25 @@
                     </svg>
                     Open Directions in Google Maps
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Photos -->
+    <section id="gallery" class="py-20 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-serif-elegant text-4xl text-center text-[#8c7853] mb-4">Gallery Photo</h2>
+            <p class="text-center text-stone-600 max-w-2xl mx-auto mb-10">A curated gallery of moments from the wedding journey. Tap any photo to view the ceremony style.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="overflow-hidden rounded-3xl shadow-xl bg-[#fdf7f0]">
+                    <img src="images/Mehendi_template.jpeg" alt="Mehendi photo" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                </div>
+                <div class="overflow-hidden rounded-3xl shadow-xl bg-[#fdf7f0]">
+                    <img src="images/OpenigCardGanesh.jpeg" alt="Ceremony photo" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                </div>
+                <div class="overflow-hidden rounded-3xl shadow-xl bg-[#fdf7f0]">
+                    <img src="images/Log.jpeg" alt="Wedding moment" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                </div>
             </div>
         </div>
     </section>
