@@ -186,7 +186,21 @@
             display: flex;
             justify-content: flex-start;
         }
-        .timeline-item.right { justify-content: flex-end; }
+        .timeline-item.left { 
+            padding-right: calc(50% + 40px);
+        }
+        .timeline-item.right { 
+            justify-content: flex-end;
+            padding-left: calc(50% + 40px);
+        }
+        @media (max-width: 768px) {
+            .timeline-item.left { 
+                padding-right: calc(50% + 20px);
+            }
+            .timeline-item.right { 
+                padding-left: calc(50% + 20px);
+            }
+        }
         .timeline-card {
             position: relative;
             display: inline-flex;
