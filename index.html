@@ -724,8 +724,13 @@
             });
         }
 
+        function getMobileScrollDuration(baseDuration) {
+            return window.matchMedia('(max-width: 768px)').matches ? Math.max(18000, Math.floor(baseDuration * 0.3)) : baseDuration;
+        }
+
         function smoothScrollTo(targetY, duration = 7000) {
             cancelSmoothScroll();
+            duration = getMobileScrollDuration(duration);
             const startY = window.scrollY || window.pageYOffset;
             const endY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
             const distance = endY - startY;
@@ -792,7 +797,7 @@
             }
 
             cancelSmoothScroll();
-            smoothPageScrollToEnd(120000);
+            smoothPageScrollToEnd(70000);
         }
 
         // 2. INTRO DOOR START
@@ -825,7 +830,7 @@
                     mainContent.classList.add('visible');
                     // Trigger staggered hero reveal shortly after main content becomes visible
                     setTimeout(() => animateHeroSequence(), 260);
-                    smoothScrollToReveal(160000);
+                    smoothScrollToReveal(90000);
                 }
             }, 1100);
         }
