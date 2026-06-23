@@ -116,6 +116,11 @@
         /* Global moving sparkles across the site */
         #global-sparkles { position: fixed; inset: 0; pointer-events: none; z-index: 10; overflow: hidden; }
         .g-sparkle { position: absolute; width: 8px; height: 8px; border-radius: 9999px; background: radial-gradient(circle at 30% 30%, #fff, #ffd9b3 60%); filter: blur(0.6px) drop-shadow(0 0 8px rgba(255,220,160,0.9)); opacity: 0.85; animation: gfloat linear infinite; }
+        .gallery-carousel { overflow: hidden; position: relative; }
+        .gallery-track { display: flex; align-items: center; gap: 1.5rem; min-width: max-content; animation: gallery-scroll 24s linear infinite alternate; }
+        .gallery-item { flex: 0 0 min(320px, 80vw); width: min(320px, 80vw); }
+        .gallery-track:hover { animation-play-state: paused; }
+        @keyframes gallery-scroll { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
         .g-sparkle.s1 { left: 6%; top: 10%; animation-duration: 9s; animation-delay: 0s; }
         .g-sparkle.s2 { left: 22%; top: 40%; animation-duration: 12s; animation-delay: 1.5s; }
         .g-sparkle.s3 { left: 60%; top: 18%; animation-duration: 11s; animation-delay: 0.6s; }
@@ -148,6 +153,9 @@
             align-items: center;
             margin: 0 auto;
             padding: 0.5rem 1rem;
+        }
+        .scratch-card .countdown-panel .flex{
+            margin-top: 1rem;
         }
         .scratch-card .scratch-reveal-date {
             margin-top: 0.75rem;
@@ -412,7 +420,7 @@
                         <span class="flower-petal"></span>
                     </div>
                     <div id="countdown-wrapper" class="countdown-panel mt-10 opacity-0">
-                        <div id="scratch-date-wrapper" class="scratch-date-wrapper">
+                        <div id="scratch-date-wrapper" class="scratch-date-wrapper mb-10">
                             <p id="scratch-date" class="scratch-reveal-date text-3xl md:text-4xl font-serif-elegant tracking-[0.08em] text-[#8c7853] mb-6">22nd Feb 2027</p>
                             <div class="date-sparkles" aria-hidden="true">
                                 <span class="date-sparkle"></span>
@@ -442,7 +450,7 @@
                             </div>
                         </div>
                         <div id="schedule-timeline-summary" class="timeline-summary mt-8">
-                            <p class="schedule-summary-text text-sm md:text-base text-stone-500 mb-6">This is the content summary of the wedding schedule. Tap any item to jump to its details below.</p>
+                            <p class="schedule-summary-text text-sm md:text-base text-stone-500 mb-6">The wedding schdeule</p>
                             <div class="timeline-line"></div>
                             <div class="timeline-item left">
                                 <a href="#mehendi" class="timeline-card">
@@ -489,8 +497,6 @@
 
     <!-- Wedding Schedule (vertical scrollable templates) -->
     <section class="py-20 px-4 max-w-4xl mx-auto">
-        <h2 class="font-serif-elegant text-4xl text-center text-[#8c7853] mb-12">The Wedding Schedule</h2>
-
         <div class="space-y-8">
             <!-- Template: Mehendi -->
             <article id="mehendi" class="bg-white rounded-2xl shadow-md p-6">
@@ -625,18 +631,32 @@
         <div class="max-w-6xl mx-auto">
             <h2 class="font-serif-elegant text-4xl text-center text-[#8c7853] mb-4">Gallery Photo</h2>
             <p class="text-center text-stone-600 max-w-2xl mx-auto mb-10">A curated gallery of moments from the wedding journey. Tap any photo to view the ceremony style.</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="overflow-hidden rounded-3xl shadow-xl bg-[#fdf7f0]">
-                    <img src="images/image1.jpeg" alt="Wedding moment 1" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
-                </div>
-                <div class="overflow-hidden rounded-3xl shadow-xl bg-[#fdf7f0]">
-                    <img src="images/image2.jpeg" alt="Wedding moment 2" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
-                </div>
-                <div class="overflow-hidden rounded-3xl shadow-xl bg-[#fdf7f0]">
-                    <img src="images/image3.jpeg" alt="Wedding moment 3" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
-                </div>
-                <div class="overflow-hidden rounded-3xl shadow-xl bg-[#fdf7f0]">
-                    <img src="images/image4.jpeg" alt="Wedding moment 4" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+            <div class="gallery-carousel overflow-hidden rounded-[2rem] bg-[#f8f2e8] p-4 shadow-xl">
+                <div class="gallery-track flex items-center gap-6">
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image1.jpeg" alt="Wedding moment 1" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image2.jpeg" alt="Wedding moment 2" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image3.jpeg" alt="Wedding moment 3" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image4.jpeg" alt="Wedding moment 4" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image1.jpeg" alt="Wedding moment 1" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image2.jpeg" alt="Wedding moment 2" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image3.jpeg" alt="Wedding moment 3" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
+                    <div class="gallery-item overflow-hidden rounded-3xl bg-[#fdf7f0] shadow-xl flex-shrink-0">
+                        <img src="images/image4.jpeg" alt="Wedding moment 4" class="w-full h-80 object-cover transition duration-500 hover:scale-105" />
+                    </div>
                 </div>
             </div>
         </div>
