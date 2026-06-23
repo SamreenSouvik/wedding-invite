@@ -141,6 +141,14 @@
         .scratch-card .scratch-content { position: relative; z-index: 5; padding-top: 12rem; }
         .scratch-card .save-date-label { letter-spacing: 0.35em; text-transform: uppercase; color: #b37d4f; opacity: 0.95; }
         .scratch-card .save-date-title { font-family: 'Great Vibes', cursive; letter-spacing: 0.08em; font-weight: 700; color: #8c7853; margin-top: 0.75rem; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
+        .scratch-card .scratch-date-wrapper {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            padding: 0.5rem 1rem;
+        }
         .scratch-card .scratch-reveal-date {
             margin-top: 0.75rem;
             font-size: 2rem;
@@ -152,6 +160,35 @@
         .scratch-card .scratch-reveal-date.revealed {
             opacity: 1;
             transform: translateY(0) scale(1);
+        }
+        .scratch-card .date-sparkles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .scratch-card .date-sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 9999px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,218,150,0.95) 55%, rgba(255,218,150,0.1) 100%);
+            opacity: 0;
+            transform: scale(0.2);
+            animation: sparkle-burst 1s ease forwards;
+        }
+        .scratch-card .date-sparkle:nth-child(1) { top: 10%; left: 30%; animation-delay: 0.05s; }
+        .scratch-card .date-sparkle:nth-child(2) { top: 22%; left: 75%; animation-delay: 0.12s; }
+        .scratch-card .date-sparkle:nth-child(3) { top: 60%; left: 18%; animation-delay: 0.18s; }
+        .scratch-card .date-sparkle:nth-child(4) { top: 64%; left: 82%; animation-delay: 0.25s; }
+        .scratch-card .date-sparkle:nth-child(5) { top: 40%; left: 46%; animation-delay: 0.32s; }
+        .scratch-card .date-sparkle:nth-child(6) { top: 56%; left: 64%; animation-delay: 0.4s; }
+        .scratch-card .scratch-date-wrapper.revealed .date-sparkle {
+            opacity: 1;
+        }
+        @keyframes sparkle-burst {
+            0% { opacity: 0; transform: scale(0.2) translate(0, 0); }
+            40% { opacity: 1; transform: scale(1.05) translate(0, -6px); }
+            100% { opacity: 0; transform: scale(0.6) translate(0, -16px); }
         }
         .countdown-panel {
             max-height: 0;
@@ -304,7 +341,17 @@
                 <div class="scratch-content">
                     <button id="scratch-reveal-button" type="button" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#7a6b4a] transition">Reveal Date</button>
                     <div id="countdown-wrapper" class="countdown-panel mt-10 opacity-0">
-                        <p id="scratch-date" class="scratch-reveal-date text-3xl md:text-4xl font-serif-elegant tracking-[0.08em] text-[#8c7853] mb-6">22nd Feb 2027</p>
+                        <div id="scratch-date-wrapper" class="scratch-date-wrapper">
+                            <p id="scratch-date" class="scratch-reveal-date text-3xl md:text-4xl font-serif-elegant tracking-[0.08em] text-[#8c7853] mb-6">22nd Feb 2027</p>
+                            <div class="date-sparkles" aria-hidden="true">
+                                <span class="date-sparkle"></span>
+                                <span class="date-sparkle"></span>
+                                <span class="date-sparkle"></span>
+                                <span class="date-sparkle"></span>
+                                <span class="date-sparkle"></span>
+                                <span class="date-sparkle"></span>
+                            </div>
+                        </div>
                         <div id="schedule-timeline-summary" class="timeline-summary mt-8">
                             <p class="schedule-summary-text text-sm md:text-base text-stone-500 mb-6">This is the content summary of the wedding schedule. Tap any item to jump to its details below.</p>
                             <div class="timeline-line"></div>
@@ -598,10 +645,12 @@
 
             const countdownWrapper = document.getElementById('countdown-wrapper');
             const scratchDate = document.getElementById('scratch-date');
+            const dateWrapper = document.getElementById('scratch-date-wrapper');
             const revealBtn = document.getElementById('scratch-reveal-button');
 
             if (countdownWrapper) countdownWrapper.classList.add('revealed');
             if (scratchDate) scratchDate.classList.add('revealed');
+            if (dateWrapper) dateWrapper.classList.add('revealed');
             if (revealBtn) {
                 revealBtn.disabled = true;
                 revealBtn.textContent = 'Date Revealed';
@@ -638,6 +687,7 @@
                     mainContent.classList.add('visible');
                     // Trigger staggered hero reveal shortly after main content becomes visible
                     setTimeout(() => animateHeroSequence(), 260);
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                 }
             }, 1100);
         }
