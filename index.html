@@ -701,6 +701,54 @@
             document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
         }
 
+        let pageScrollAnimation = null;
+
+        function cancelSmoothScroll() {
+            if (pageScrollAnimation !== null) {
+                cancelAnimationFrame(pageScrollAnimation);
+                pageScrollAnimation = null;
+            }
+        }
+
+        function smoothScrollTo(targetY, duration = 7000) {
+            cancelSmoothScroll();
+            const startY = window.scrollY || window.pageYOffset;
+            const endY = Math.max(0, Math.min(targetY, document.body.scrollHeight - window.innerHeight));
+            const distance = endY - startY;
+            if (distance === 0 || duration <= 0) {
+                window.scrollTo(0, endY);
+                return;
+            }
+            const startTime = performance.now();
+
+            function step(currentTime) {
+                const elapsed = Math.min(currentTime - startTime, duration);
+                const progress = elapsed / duration;
+                const eased = progress < 0.5
+                    ? 2 * progress * progress
+                    : -1 + (4 - 2 * progress) * progress;
+                window.scrollTo(0, startY + distance * eased);
+                if (elapsed < duration) {
+                    pageScrollAnimation = requestAnimationFrame(step);
+                } else {
+                    pageScrollAnimation = null;
+                }
+            }
+
+            pageScrollAnimation = requestAnimationFrame(step);
+        }
+
+        function smoothScrollToElement(element, duration = 7000) {
+            if (!element) return;
+            const rect = element.getBoundingClientRect();
+            const targetY = (window.scrollY || window.pageYOffset) + rect.top - 40;
+            smoothScrollTo(targetY, duration);
+        }
+
+        function smoothPageScrollToEnd(duration = 7000) {
+            smoothScrollTo(document.body.scrollHeight - window.innerHeight, duration);
+        }
+
         function revealCountdown() {
             if (countdownStarted) return;
             countdownStarted = true;
@@ -719,26 +767,8 @@
                 revealBtn.disabled = true;
                 revealBtn.textContent = 'Date Revealed';
             }
-        }
 
-        function smoothPageScrollToEnd(duration = 7000) {
-            const startY = window.scrollY || window.pageYOffset;
-            const endY = document.body.scrollHeight - window.innerHeight;
-            const distance = endY - startY;
-            if (distance <= 0) return;
-            const startTime = performance.now();
-
-            function step(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = progress < 0.5
-                    ? 2 * progress * progress
-                    : -1 + (4 - 2 * progress) * progress;
-                window.scrollTo(0, startY + distance * eased);
-                if (progress < 1) requestAnimationFrame(step);
-            }
-
-            requestAnimationFrame(step);
+            smoothPageScrollToEnd(150000);
         }
 
         // 2. INTRO DOOR START
