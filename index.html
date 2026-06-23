@@ -165,6 +165,7 @@
             position: absolute;
             inset: 0;
             pointer-events: none;
+            display: none;
         }
         .scratch-card .date-sparkle {
             position: absolute;
@@ -198,6 +199,7 @@
             transform: translateY(0) scale(1);
             text-shadow: 0 0 32px rgba(255,229,178,1), 0 0 88px rgba(255,196,120,0.45);
             color: #a66e2d;
+            animation: date-glow 1.8s ease-in-out infinite;
         }
         .scratch-card .flower-shower {
             position: absolute;
@@ -214,7 +216,7 @@
             filter: drop-shadow(0 0 10px rgba(255, 198, 120, 0.65));
             opacity: 0;
             transform: translateY(0) rotate(0deg) scale(0.6);
-            animation: petal-fall 2.4s ease forwards;
+            animation: petal-fall 4.2s ease forwards;
             animation-play-state: paused;
         }
         .scratch-card .scratch-date-wrapper.revealed .flower-petal {
@@ -232,12 +234,16 @@
             0% { opacity: 0; transform: translateY(-20px) rotate(0deg) scale(0.4); }
             20% { opacity: 1; }
             60% { opacity: 1; transform: translateY(140px) rotate(240deg) scale(1.05); }
-            100% { opacity: 0; transform: translateY(240px) rotate(340deg) scale(0.8); }
+            100% { opacity: 0; transform: translateY(260px) rotate(360deg) scale(0.9); }
         }
         @keyframes sparkle-burst {
             0% { opacity: 0; transform: scale(0.2) translate(0, 0); }
             40% { opacity: 1; transform: scale(1.1) translate(0, -6px); }
             100% { opacity: 0; transform: scale(0.6) translate(0, -20px); }
+        }
+        @keyframes date-glow {
+            0%, 100% { text-shadow: 0 0 18px rgba(255, 215, 160, 0.8), 0 0 42px rgba(255, 180, 120, 0.3); }
+            50% { text-shadow: 0 0 28px rgba(255, 245, 190, 1), 0 0 72px rgba(255, 205, 150, 0.45); }
         }
         @keyframes date-pulse {
             0% { transform: scale(0.98); }
@@ -749,6 +755,15 @@
             smoothScrollTo(document.body.scrollHeight - window.innerHeight, duration);
         }
 
+        function smoothScrollToReveal(duration = 120000) {
+            const revealSection = document.querySelector('.scratch-card');
+            if (revealSection) {
+                smoothScrollToElement(revealSection, duration);
+            } else {
+                smoothPageScrollToEnd(duration);
+            }
+        }
+
         function revealCountdown() {
             if (countdownStarted) return;
             countdownStarted = true;
@@ -768,7 +783,8 @@
                 revealBtn.textContent = 'Date Revealed';
             }
 
-            smoothPageScrollToEnd(150000);
+            cancelSmoothScroll();
+            smoothPageScrollToEnd(180000);
         }
 
         // 2. INTRO DOOR START
@@ -801,7 +817,7 @@
                     mainContent.classList.add('visible');
                     // Trigger staggered hero reveal shortly after main content becomes visible
                     setTimeout(() => animateHeroSequence(), 260);
-                    smoothPageScrollToEnd(40000);
+                    smoothScrollToReveal(240000);
                 }
             }, 1100);
         }
