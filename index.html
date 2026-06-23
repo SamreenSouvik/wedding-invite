@@ -121,6 +121,12 @@
         .gallery-item { flex: 0 0 min(320px, 80vw); width: min(320px, 80vw); }
         .gallery-track:hover { animation-play-state: paused; }
         @keyframes gallery-scroll { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+        .mehendi-frame { display: flex; align-items: center; justify-content: center; }
+        .mehendi-image { object-fit: contain; object-position: center center; }
+        @media (max-width: 768px) {
+            .mehendi-frame { padding: 1rem; }
+            .mehendi-image { width: auto; height: 100%; }
+        }
         .g-sparkle.s1 { left: 6%; top: 10%; animation-duration: 9s; animation-delay: 0s; }
         .g-sparkle.s2 { left: 22%; top: 40%; animation-duration: 12s; animation-delay: 1.5s; }
         .g-sparkle.s3 { left: 60%; top: 18%; animation-duration: 11s; animation-delay: 0.6s; }
@@ -500,8 +506,8 @@
         <div class="space-y-8">
             <!-- Template: Mehendi -->
             <article id="mehendi" class="bg-gradient-to-b from-[#d4a574] via-[#e6c38d] to-[#f9f1dd] shadow-md overflow-hidden min-h-screen">
-                <div class="w-full h-screen overflow-hidden bg-[#d4a574]">
-                    <img src="Mehendi/image.jpeg" alt="Mehendi template" class="w-full h-full object-cover" />
+                <div class="mehendi-frame w-full h-screen overflow-hidden bg-[#d4a574]">
+                    <img src="Mehendi/image.jpeg" alt="Mehendi template" class="mehendi-image w-full h-full" />
                 </div>
             </article>
 
