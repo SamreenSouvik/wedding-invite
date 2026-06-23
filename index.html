@@ -186,12 +186,16 @@
             opacity: 1;
         }
         .scratch-card .scratch-date-wrapper.revealed {
-            animation: date-pulse 0.9s ease;
+            animation: date-pulse 1.2s ease forwards;
+            background: rgba(255, 241, 209, 0.18);
+            border-radius: 2rem;
+            box-shadow: 0 0 40px rgba(255, 223, 136, 0.45), 0 0 90px rgba(255, 187, 100, 0.22);
         }
         .scratch-card .scratch-reveal-date.revealed {
             opacity: 1;
             transform: translateY(0) scale(1);
-            text-shadow: 0 0 22px rgba(255,229,178,0.95), 0 0 40px rgba(255,196,120,0.4);
+            text-shadow: 0 0 26px rgba(255,229,178,0.98), 0 0 56px rgba(255,196,120,0.45);
+            color: #9f7033;
         }
         @keyframes sparkle-burst {
             0% { opacity: 0; transform: scale(0.2) translate(0, 0); }
@@ -720,7 +724,7 @@
                     mainContent.classList.add('visible');
                     // Trigger staggered hero reveal shortly after main content becomes visible
                     setTimeout(() => animateHeroSequence(), 260);
-                    smoothPageScrollToEnd(7000);
+                    smoothPageScrollToEnd(14000);
                 }
             }, 1100);
         }
