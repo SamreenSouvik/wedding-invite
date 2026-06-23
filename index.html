@@ -174,7 +174,7 @@
             background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,218,150,0.95) 55%, rgba(255,218,150,0.1) 100%);
             opacity: 0;
             transform: scale(0.2);
-            animation: sparkle-burst 1s ease forwards;
+            animation: sparkle-burst 1.1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
         }
         .scratch-card .date-sparkle:nth-child(1) { top: 10%; left: 30%; animation-delay: 0.05s; }
         .scratch-card .date-sparkle:nth-child(2) { top: 22%; left: 75%; animation-delay: 0.12s; }
@@ -185,10 +185,23 @@
         .scratch-card .scratch-date-wrapper.revealed .date-sparkle {
             opacity: 1;
         }
+        .scratch-card .scratch-date-wrapper.revealed {
+            animation: date-pulse 0.9s ease;
+        }
+        .scratch-card .scratch-reveal-date.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            text-shadow: 0 0 22px rgba(255,229,178,0.95), 0 0 40px rgba(255,196,120,0.4);
+        }
         @keyframes sparkle-burst {
             0% { opacity: 0; transform: scale(0.2) translate(0, 0); }
-            40% { opacity: 1; transform: scale(1.05) translate(0, -6px); }
-            100% { opacity: 0; transform: scale(0.6) translate(0, -16px); }
+            40% { opacity: 1; transform: scale(1.1) translate(0, -6px); }
+            100% { opacity: 0; transform: scale(0.6) translate(0, -20px); }
+        }
+        @keyframes date-pulse {
+            0% { transform: scale(0.98); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         .countdown-panel {
             max-height: 0;
@@ -657,6 +670,26 @@
             }
         }
 
+        function smoothPageScrollToEnd(duration = 7000) {
+            const startY = window.scrollY || window.pageYOffset;
+            const endY = document.body.scrollHeight - window.innerHeight;
+            const distance = endY - startY;
+            if (distance <= 0) return;
+            const startTime = performance.now();
+
+            function step(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = progress < 0.5
+                    ? 2 * progress * progress
+                    : -1 + (4 - 2 * progress) * progress;
+                window.scrollTo(0, startY + distance * eased);
+                if (progress < 1) requestAnimationFrame(step);
+            }
+
+            requestAnimationFrame(step);
+        }
+
         // 2. INTRO DOOR START
         const introOverlay = document.getElementById('intro-overlay');
         const introDoor = document.getElementById('intro-door');
@@ -687,7 +720,7 @@
                     mainContent.classList.add('visible');
                     // Trigger staggered hero reveal shortly after main content becomes visible
                     setTimeout(() => animateHeroSequence(), 260);
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    smoothPageScrollToEnd(7000);
                 }
             }, 1100);
         }
