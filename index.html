@@ -206,6 +206,7 @@
             inset: 0;
             pointer-events: none;
             overflow: hidden;
+            z-index: 4;
         }
         .scratch-card .flower-petal {
             position: absolute;
@@ -219,7 +220,7 @@
             animation: petal-fall 4.2s ease forwards;
             animation-play-state: paused;
         }
-        .scratch-card .scratch-date-wrapper.revealed .flower-petal {
+        .scratch-card.revealed .flower-petal {
             animation-play-state: running;
         }
         .scratch-card .flower-petal:nth-child(1) { left: 10%; animation-delay: 0.05s; }
@@ -400,6 +401,16 @@
                 </div>
                 <div class="scratch-content">
                     <button id="scratch-reveal-button" type="button" class="mt-6 inline-flex items-center justify-center rounded-full bg-[#8c7853] px-6 py-3 text-white font-semibold shadow-lg hover:bg-[#7a6b4a] transition">Reveal Date</button>
+                    <div class="flower-shower" aria-hidden="true">
+                        <span class="flower-petal"></span>
+                        <span class="flower-petal"></span>
+                        <span class="flower-petal"></span>
+                        <span class="flower-petal"></span>
+                        <span class="flower-petal"></span>
+                        <span class="flower-petal"></span>
+                        <span class="flower-petal"></span>
+                        <span class="flower-petal"></span>
+                    </div>
                     <div id="countdown-wrapper" class="countdown-panel mt-10 opacity-0">
                         <div id="scratch-date-wrapper" class="scratch-date-wrapper">
                             <p id="scratch-date" class="scratch-reveal-date text-3xl md:text-4xl font-serif-elegant tracking-[0.08em] text-[#8c7853] mb-6">22nd Feb 2027</p>
@@ -411,18 +422,9 @@
                                 <span class="date-sparkle"></span>
                                 <span class="date-sparkle"></span>
                             </div>
-                            <div class="flower-shower" aria-hidden="true">
-                                <span class="flower-petal"></span>
-                                <span class="flower-petal"></span>
-                                <span class="flower-petal"></span>
-                                <span class="flower-petal"></span>
-                                <span class="flower-petal"></span>
-                                <span class="flower-petal"></span>
-                                <span class="flower-petal"></span>
-                                <span class="flower-petal"></span>
-                            </div>
                         </div>
                         <div id="schedule-timeline-summary" class="timeline-summary mt-8">
+
                             <p class="schedule-summary-text text-sm md:text-base text-stone-500 mb-6">This is the content summary of the wedding schedule. Tap any item to jump to its details below.</p>
                             <div class="timeline-line"></div>
                             <div class="timeline-item left">
@@ -730,9 +732,7 @@
             function step(currentTime) {
                 const elapsed = Math.min(currentTime - startTime, duration);
                 const progress = elapsed / duration;
-                const eased = progress < 0.5
-                    ? 2 * progress * progress
-                    : -1 + (4 - 2 * progress) * progress;
+                const eased = progress;
                 window.scrollTo(0, startY + distance * eased);
                 if (elapsed < duration) {
                     pageScrollAnimation = requestAnimationFrame(step);
@@ -775,6 +775,8 @@
             const dateWrapper = document.getElementById('scratch-date-wrapper');
             const revealBtn = document.getElementById('scratch-reveal-button');
 
+            const scratchCard = document.querySelector('.scratch-card');
+            if (scratchCard) scratchCard.classList.add('revealed');
             if (countdownWrapper) countdownWrapper.classList.add('revealed');
             if (scratchDate) scratchDate.classList.add('revealed');
             if (dateWrapper) dateWrapper.classList.add('revealed');
