@@ -19,6 +19,7 @@
   @keyframes shimmer { 0%,100% { opacity:.35 } 50% { opacity:.9 } }
   @keyframes burst { 0% { transform: translate(-50%,-50%) scale(.2); opacity:0; } 25% { opacity:1; } 100% { transform: translate(-50%,-50%) translate(var(--bx,0), var(--by,0)) scale(1.05) rotate(160deg); opacity:0; } }
   @keyframes sparkleDrift { 0% { transform: translateY(0) translateX(0) scale(1); opacity:0; } 10% { opacity:.9; } 90% { opacity:.7; } 100% { transform: translateY(-115vh) translateX(var(--sx,20px)) scale(.4); opacity:0; } }
+  @keyframes celebratePop { 0% { transform: scale(0) rotate(0deg); opacity:0; } 25% { opacity:1; } 55% { transform: scale(1.25) rotate(170deg); opacity:1; } 100% { transform: scale(.85) rotate(340deg); opacity:0; } }
 
   /* ENTRY OVERLAY */
   #overlay { position: fixed; inset: 0; z-index: 60; overflow: hidden; background: #f4ecdc; transition: opacity .9s ease; }
@@ -41,7 +42,9 @@
 
   /* COUNTDOWN reveal */
   #countdownGrid { opacity: 0; max-height: 0; overflow: hidden; transition: opacity .7s ease, max-height .8s ease, margin-top .7s ease; }
-  #countdownGrid.revealed { opacity: 1; max-height: 360px; margin-top: 8px; }
+  #countdownGrid.revealed { opacity: 1; max-height: 360px; margin-top: 28px; }
+  #foreverQuote { opacity: 0; max-height: 0; overflow: hidden; transition: opacity .7s ease, max-height .8s ease, margin-top .7s ease; }
+  #foreverQuote.revealed { opacity: 1; max-height: 140px; margin-top: 30px; }
 
   /* GALLERY */
   @keyframes galleryScroll { 0% { transform: translateX(0); } 100% { transform: translateX(calc(-50% - 7px)); } }
@@ -58,6 +61,8 @@
 <div aria-hidden="true" style="position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden;" id="florals"></div>
 <!-- drifting sparkle bubbles -->
 <div aria-hidden="true" style="position:fixed; inset:0; z-index:30; pointer-events:none; overflow:hidden;" id="bubbles"></div>
+<!-- full-screen celebration when date is revealed -->
+<div aria-hidden="true" style="position:fixed; inset:0; z-index:55; pointer-events:none; overflow:hidden;" id="celebration"></div>
 
 <!-- NAV -->
 <nav style="position:sticky; top:0; z-index:40; display:flex; align-items:center; justify-content:center; gap:18px; padding:12px 16px; background:rgba(244,231,228,.72); backdrop-filter:blur(10px); border-bottom:1px solid rgba(184,146,85,.28);">
@@ -75,31 +80,24 @@
 
 <!-- HERO -->
 <section id="home" style="position:relative; display:flex; flex-direction:column; align-items:center; padding:34px 18px 50px;">
-  <div style="font-family:'Marcellus',serif; letter-spacing:.34em; text-transform:uppercase; font-size:12px; color:#9a7a3e; margin-bottom:6px;">Together with their families</div>
+  <div style="font-family:'Marcellus',serif; letter-spacing:.34em; text-transform:uppercase; font-size:12px; color:#9a7a3e; margin-bottom:6px;">Meet the couple</div>
   <div style="width:74px; height:1px; background:linear-gradient(90deg,transparent,#b89255,transparent); margin:8px 0 22px;"></div>
   <div style="position:relative; width:min(86vw,440px); aspect-ratio:1/1; border-radius:18px; overflow:hidden; box-shadow:0 18px 50px -20px rgba(80,40,90,.5); border:1px solid rgba(184,146,85,.4);">
     <img src="images/Log.jpeg" alt="Samreen and Souvik" style="width:100%; height:100%; object-fit:cover; animation:kenburns 18s ease-in-out infinite alternate;">
   </div>
   <h1 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(40px,12vw,68px); margin:26px 0 2px; color:#20306b; line-height:1; text-align:center;">Samreen <span style="color:#b89255; font-style:italic; font-weight:400;">&amp;</span> Souvik</h1>
-  <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:19px; color:#6e1b2a; margin-top:6px;">We're getting married</div>
-  <div style="margin-top:34px; display:flex; flex-direction:column; align-items:center; gap:6px; animation:hintBob 2.4s ease-in-out infinite;">
-    <span style="font-family:'Marcellus',serif; font-size:10.5px; letter-spacing:.28em; text-transform:uppercase; color:#8a7fa6;">Scroll</span>
-    <span style="font-size:16px; color:#b89255;">&#9662;</span>
-  </div>
 </section>
 
 <!-- COUNTDOWN + SCRATCH -->
 <section id="countdown" style="padding:18px 18px 56px; text-align:center;">
-  <div style="font-family:'Marcellus',serif; letter-spacing:.3em; text-transform:uppercase; font-size:12px; color:#9a7a3e;">Save the date</div>
-  <h2 id="scratchTitle" style="font-family:'Cormorant Garamond',serif; font-weight:500; font-style:italic; font-size:clamp(30px,9vw,46px); color:#5d4e86; margin:6px 0 8px;">Scratch to reveal</h2>
-  <div id="scratchHint" style="font-size:12px; color:#8a7fa6; margin-bottom:18px;">Rub the card below with your finger</div>
+  <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(22px,6vw,28px); color:#6e1b2a; margin-bottom:4px;">We're getting married</div>
+  <h2 id="scratchTitle" style="font-family:'Cormorant Garamond',serif; font-weight:500; font-style:italic; font-size:clamp(24px,7vw,36px); color:#5d4e86; margin:6px 0 8px;">Save the date</h2>
+  <div id="scratchHint" style="font-size:12px; color:#8a7fa6; margin-bottom:18px;"></div>
 
-  <div style="position:relative; width:min(86vw,330px); margin:0 auto 30px;">
+  <div style="position:relative; width:min(76vw,272px); margin:0 auto 34px;">
     <div id="scratchTicket" style="position:relative; width:100%; height:160px; border-radius:18px; overflow:hidden; border:1.5px solid #c9a24a; box-shadow:0 16px 42px -22px rgba(80,40,90,.55);">
       <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; background:linear-gradient(160deg,#fdf6ef,#f1e7fa);">
-        <div style="font-family:'Marcellus',serif; letter-spacing:.26em; text-transform:uppercase; font-size:10px; color:#9a7a3e;">The wedding of</div>
         <div style="font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(26px,8vw,37px); color:#6e1b2a; line-height:1;">22 February 2027</div>
-        <div style="font-family:'Marcellus',serif; letter-spacing:.2em; text-transform:uppercase; font-size:10px; color:#5b4f7a;">Bengaluru</div>
       </div>
       <canvas id="scratchCanvas" style="position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:grab;"></canvas>
       <div id="burstLayer" style="position:absolute; inset:0; pointer-events:none; z-index:5;"></div>
@@ -124,6 +122,55 @@
       <div style="font-family:'Marcellus',serif; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#8a7fa6; margin-top:6px;">Seconds</div>
     </div>
   </div>
+
+  <div id="foreverQuote">
+    <div style="color:#c9a24a; font-size:13px; letter-spacing:.3em; margin-bottom:6px;">&#10086;</div>
+    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(18px,5vw,26px); color:#6e1b2a; margin:0 auto; max-width:380px; line-height:1.4;">&ldquo;Until our forever begins&rdquo;</p>
+  </div>
+</section>
+
+<!-- FAMILIES -->
+<section id="families" style="padding:50px 18px 56px; text-align:center;">
+  <div style="font-family:'Marcellus',serif; letter-spacing:.3em; text-transform:uppercase; font-size:12px; color:#9a7a3e;">Two families, two cultures, one promise</div>
+  <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(34px,10vw,52px); color:#20306b; margin:10px 0 0; line-height:1;">Introducing</h2>
+  <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(22px,6.5vw,32px); color:#6e1b2a; margin-top:2px;">the families</div>
+  <div style="width:74px; height:1px; background:linear-gradient(90deg,transparent,#b89255,transparent); margin:16px auto 0;"></div>
+
+  <div style="display:grid; grid-template-columns:1fr auto 1fr; align-items:start; gap:10px; max-width:600px; margin:34px auto 0;">
+
+    <!-- LEFT: Samreen -->
+    <div style="text-align:center;">
+      <h3 style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(26px,7.5vw,40px); color:#20306b; margin:0 0 12px; line-height:1;">Samreen</h3>
+      <div style="font-family:'Marcellus',serif; letter-spacing:.22em; text-transform:uppercase; font-size:9.5px; color:#9a7a3e; margin-bottom:3px;">D | O</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:clamp(15px,4vw,18px); color:#5b4f7a; line-height:1.3;">Mrs Simmi <span style="color:#b89255; font-style:italic;">&amp;</span> Dr Rajinder Singh</div>
+      <div style="font-family:'Marcellus',serif; letter-spacing:.22em; text-transform:uppercase; font-size:9.5px; color:#9a7a3e; margin:14px 0 3px;">Sister of</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:clamp(15px,4vw,18px); color:#5b4f7a; line-height:1.3;">Rachita Kour <span style="color:#b89255; font-style:italic;">&amp;</span> Sourabh Chawla</div>
+      <div style="font-family:'Marcellus',serif; letter-spacing:.22em; text-transform:uppercase; font-size:9.5px; color:#9a7a3e; margin:14px 0 3px;">Nephew</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:clamp(15px,4vw,18px); color:#5b4f7a; line-height:1.3;">Saarth Chawla</div>
+    </div>
+
+    <!-- CENTER: logo -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:0 4px;">
+      <div style="width:1px; height:26px; background:linear-gradient(180deg,transparent,#b89255);"></div>
+      <div style="position:relative; width:clamp(58px,16vw,82px); aspect-ratio:1/1; border-radius:50%; padding:5px; background:linear-gradient(160deg,#f2d784,#cda63f,#a8842c); box-shadow:0 8px 20px -8px rgba(120,90,20,.55);">
+        <img src="images/IntialsLogo.png" alt="S&amp;S" style="width:100%; height:100%; border-radius:50%; object-fit:cover; box-shadow:0 0 0 2px rgba(248,236,194,.85);">
+      </div>
+      <div style="width:1px; flex:1; min-height:60px; background:linear-gradient(180deg,#b89255,transparent);"></div>
+    </div>
+
+    <!-- RIGHT: Souvik -->
+    <div style="text-align:center;">
+      <h3 style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(26px,7.5vw,40px); color:#20306b; margin:0 0 12px; line-height:1;">Souvik</h3>
+      <div style="font-family:'Marcellus',serif; letter-spacing:.22em; text-transform:uppercase; font-size:9.5px; color:#9a7a3e; margin-bottom:3px;">S | O</div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:clamp(15px,4vw,18px); color:#5b4f7a; line-height:1.3;">Mrs Kakali Dandapat <span style="color:#b89255; font-style:italic;">&amp;</span><br>Sandip Dandapat</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:38px;">
+    <div style="color:#c9a24a; font-size:13px; letter-spacing:.3em; margin-bottom:8px;">&#10086;</div>
+    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(20px,5.5vw,28px); color:#6e1b2a; margin:0 auto; max-width:420px; line-height:1.4;">&ldquo;Raised with love, united by destiny&rdquo;</p>
+  </div>
 </section>
 
 <!-- EVENTS -->
@@ -147,7 +194,7 @@
 
     <div style="background:rgba(255,255,255,.62); border:1px solid rgba(184,146,85,.32); border-radius:18px; overflow:hidden; box-shadow:0 10px 30px -20px rgba(80,40,90,.5);">
       <div style="padding:18px 18px 14px;">
-        <div style="font-family:'Marcellus',serif; letter-spacing:.18em; text-transform:uppercase; font-size:10.5px; color:#7a6aa6;">Mehendi · Aiburobhaat · Sangeet · Haldi · Baraat · Phere</div>
+        <div style="font-family:'Marcellus',serif; letter-spacing:.18em; text-transform:uppercase; font-size:10.5px; color:#7a6aa6;">Aiburobhaat · Sangeet · Haldi · Baraat · Phere</div>
         <h3 style="font-family:'Cormorant Garamond',serif; font-weight:600; font-size:30px; color:#6e1b2a; margin:4px 0 2px;">The Alcor Hotel</h3>
         <div style="font-size:13px; color:#5b5470;">Bistupur, Jamshedpur, Jharkhand 831001</div>
       </div>
@@ -181,12 +228,12 @@
 <!-- GALLERY -->
 <section id="gallery" style="padding:46px 0 56px;">
   <div style="text-align:center; margin-bottom:28px; padding:0 18px;">
-    <div style="font-family:'Marcellus',serif; letter-spacing:.3em; text-transform:uppercase; font-size:12px; color:#9a7a3e;">Captured moments</div>
-    <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(34px,10vw,52px); color:#20306b; margin:6px 0 0;">Our Gallery</h2>
+    <div style="font-family:'Marcellus',serif; letter-spacing:.3em; text-transform:uppercase; font-size:12px; color:#9a7a3e;">Our Story</div>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-weight:500; font-size:clamp(34px,10vw,52px); color:#20306b; margin:6px 0 0;">Moments of love</h2>
     <div style="width:74px; height:1px; background:linear-gradient(90deg,transparent,#b89255,transparent); margin:14px auto 0;"></div>
   </div>
   <div style="overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);">
-    <div class="gallery-track" style="display:flex; gap:14px; width:max-content; padding:0 7px; animation:galleryScroll 36s linear infinite alternate;" id="galleryTrack"></div>
+    <div class="gallery-track" style="display:flex; gap:14px; width:max-content; padding:0 7px; animation:galleryScroll 36s linear infinite;" id="galleryTrack"></div>
   </div>
 </section>
 
@@ -268,9 +315,9 @@
 
   <!-- quote in the opening -->
   <div class="ov-chrome" style="position:absolute; top:12%; left:50%; transform:translateX(-50%); width:74%; max-width:500px; text-align:center; z-index:4;">
-    <div style="font-family:'Marcellus',serif; letter-spacing:.32em; text-transform:uppercase; font-size:10.5px; color:#8a7a4e;">Our love story</div>
+    <div style="font-family:'Marcellus',serif; letter-spacing:.32em; text-transform:uppercase; font-size:10.5px; color:#8a7a4e;">How it all began</div>
     <div style="width:42px; height:1px; background:linear-gradient(90deg,transparent,#c9a24a,transparent); margin:11px auto 14px;"></div>
-    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(18px,5vw,25px); line-height:1.5; color:#3a4a72; margin:0;">&ldquo;From Dhol to Dhak, from Ardaas to Subho Drishti &mdash; this is our love story.&rdquo;</p>
+    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(18px,5vw,25px); line-height:1.5; color:#3a4a72; margin:0;">&ldquo;From Dhol to Dhak, from Ardaas to Subho Drishti this is our love story.&rdquo;</p>
   </div>
 
   <!-- envelope flaps -->
@@ -500,10 +547,10 @@
     ctx.fillStyle = 'rgba(255,255,255,.22)';
     for (var i = 0; i < 26; i++) { ctx.beginPath(); ctx.arc(Math.random() * w, Math.random() * h, Math.random() * 2 + 0.5, 0, 7); ctx.fill(); }
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#fff'; ctx.font = "600 13px Marcellus, serif";
-    ctx.fillText('\u2728  SCRATCH HERE  \u2728', w / 2, h / 2 - 4);
-    ctx.fillStyle = 'rgba(255,255,255,.85)'; ctx.font = "11px Jost, sans-serif";
-    ctx.fillText('reveal our wedding date', w / 2, h / 2 + 15);
+    ctx.fillStyle = '#fff'; ctx.font = "600 14px Marcellus, serif";
+    ctx.fillText('Scratch to reveal', w / 2, h / 2 - 4);
+    ctx.fillStyle = 'rgba(255,255,255,.88)'; ctx.font = "12px Jost, sans-serif";
+    ctx.fillText('our special date', w / 2, h / 2 + 16);
     var drawing = false;
     function pos(e) { var r = canvas.getBoundingClientRect(); var p = e.touches ? e.touches[0] : e; return { x: p.clientX - r.left, y: p.clientY - r.top }; }
     function scratch(x, y) { ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(x, y, 24, 0, 7); ctx.fill(); }
@@ -525,9 +572,10 @@
   function reveal() {
     revealed = true;
     ticket.parentElement.classList.add('scratch-cleared');
-    document.getElementById('scratchTitle').textContent = "It's official \u2728";
+    document.getElementById('scratchTitle').innerHTML = '<span style="color:#b89255; font-style:normal;">\u2726</span> SAVE THE DATE <span style="color:#b89255; font-style:normal;">\u2726</span>';
     document.getElementById('scratchHint').textContent = 'See you there!';
     document.getElementById('countdownGrid').classList.add('revealed');
+    document.getElementById('foreverQuote').classList.add('revealed');
     var colors = ['#c9a24a', '#b79fd8', '#6e1b2a'];
     for (var i = 0; i < 14; i++) {
       var a = Math.random() * Math.PI * 2, dd = 55 + Math.random() * 95;
@@ -536,6 +584,17 @@
       sp.style.cssText = 'position:absolute; left:50%; top:45%; font-size:' + (10 + Math.random() * 12).toFixed(0) + 'px; color:' + colors[Math.floor(Math.random() * 3)] + '; --bx:' + (Math.cos(a) * dd).toFixed(0) + 'px; --by:' + (Math.sin(a) * dd).toFixed(0) + 'px; animation:burst ' + (0.9 + Math.random() * 0.6).toFixed(2) + 's ease-out forwards; pointer-events:none;';
       burstLayer.appendChild(sp);
     }
+    // full-screen celebration across the whole page
+    var celEl = document.getElementById('celebration');
+    var celChars = ['\u2726', '\u2727', '\u2728', '\u2729', '\u273F', '\u2740', '\u2764'];
+    var celColors = ['#c9a24a', '#b79fd8', '#6e1b2a', '#7a6aa6', '#e6c563'];
+    for (var c = 0; c < 50; c++) {
+      var s = document.createElement('span');
+      s.textContent = celChars[Math.floor(Math.random() * celChars.length)];
+      s.style.cssText = 'position:absolute; left:' + (Math.random() * 100).toFixed(1) + '%; top:' + (Math.random() * 100).toFixed(1) + '%; font-size:' + (14 + Math.random() * 26).toFixed(0) + 'px; color:' + celColors[Math.floor(Math.random() * celColors.length)] + '; transform-origin:center; animation:celebratePop ' + (0.9 + Math.random() * 0.5).toFixed(2) + 's ease-out ' + (Math.random() * 0.3).toFixed(2) + 's forwards;';
+      celEl.appendChild(s);
+    }
+    setTimeout(function () { celEl.innerHTML = ''; }, 1800);
   }
   setupScratch();
 
