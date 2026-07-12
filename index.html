@@ -525,12 +525,54 @@
 
   var form = document.getElementById('rsvpForm');
   var thanks = document.getElementById('rsvpThanks');
+
+  /* ---------- Google Form submission (RSVPs land in the linked Sheet) ---------- */
+  var GFORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSd3VflEfofDnTEg9CG3zKOIm1nY_5Ro3bN9gUSqJXiYA_yUpA/formResponse';
+  var GFORM_ENTRIES = {
+    name: 'entry.730336381',
+    attending: 'entry.1484986583',
+    guests: 'entry.1466424937',
+    events: 'entry.624498498',
+    msg: 'entry.138570727'
+  };
+  function submitToGoogleForm(entry) {
+    var iframe = document.getElementById('gformFrame');
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.name = 'gformFrame';
+      iframe.id = 'gformFrame';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+    }
+    var f = document.createElement('form');
+    f.action = GFORM_ACTION;
+    f.method = 'POST';
+    f.target = 'gformFrame';
+    f.style.display = 'none';
+    function addField(entryId, value) {
+      var inp = document.createElement('input');
+      inp.type = 'hidden';
+      inp.name = entryId;
+      inp.value = value;
+      f.appendChild(inp);
+    }
+    addField(GFORM_ENTRIES.name, entry.name);
+    addField(GFORM_ENTRIES.attending, entry.attending === 'yes' ? 'Yes' : 'No');
+    addField(GFORM_ENTRIES.guests, String(entry.guests));
+    entry.events.forEach(function (ev) { addField(GFORM_ENTRIES.events, ev); });
+    addField(GFORM_ENTRIES.msg, entry.msg);
+    document.body.appendChild(f);
+    f.submit();
+    setTimeout(function () { f.remove(); }, 1000);
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var name = document.getElementById('rName').value.trim();
     if (!name) { document.getElementById('rName').focus(); return; }
     var entry = { name: name, attending: attending, guests: guests, events: selectedEvents, msg: document.getElementById('rMsg').value, ts: new Date().toISOString() };
     try { var list = JSON.parse(localStorage.getItem('rsvp_samreen_souvik') || '[]'); list.push(entry); localStorage.setItem('rsvp_samreen_souvik', JSON.stringify(list)); } catch (err) {}
+    submitToGoogleForm(entry);
     form.style.display = 'none';
     thanks.style.display = 'block';
   });
