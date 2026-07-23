@@ -560,6 +560,18 @@
     msg: 'entry.138570727'
   };
   function submitToGoogleForm(entry) {
+    var params = new URLSearchParams();
+    params.append(GFORM_ENTRIES.name, entry.name);
+    params.append(GFORM_ENTRIES.attending, entry.attending === 'yes' ? 'Yes' : 'No');
+    params.append(GFORM_ENTRIES.guests, String(entry.guests));
+    entry.events.forEach(function (ev) { params.append(GFORM_ENTRIES.events, ev); });
+    params.append(GFORM_ENTRIES.msg, entry.msg);
+    params.append('pageHistory', '0');
+    params.append('fvv', '1');
+
+    fetch(GFORM_ACTION, { method: 'POST', mode: 'no-cors', body: params }).catch(function () {});
+
+    /* fallback: hidden iframe form-post, in case fetch is blocked */
     var iframe = document.getElementById('gformFrame');
     if (!iframe) {
       iframe = document.createElement('iframe');
@@ -585,6 +597,7 @@
     addField(GFORM_ENTRIES.guests, String(entry.guests));
     entry.events.forEach(function (ev) { addField(GFORM_ENTRIES.events, ev); });
     addField(GFORM_ENTRIES.msg, entry.msg);
+    addField('pageHistory', '0');
     document.body.appendChild(f);
     f.submit();
     setTimeout(function () { f.remove(); }, 1000);
