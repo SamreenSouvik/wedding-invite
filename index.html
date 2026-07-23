@@ -20,6 +20,7 @@
   @keyframes burst { 0% { transform: translate(-50%,-50%) scale(.2); opacity:0; } 25% { opacity:1; } 100% { transform: translate(-50%,-50%) translate(var(--bx,0), var(--by,0)) scale(1.05) rotate(160deg); opacity:0; } }
   @keyframes sparkleDrift { 0% { transform: translateY(0) translateX(0) scale(1); opacity:0; } 10% { opacity:.9; } 90% { opacity:.7; } 100% { transform: translateY(-115vh) translateX(var(--sx,20px)) scale(.4); opacity:0; } }
   @keyframes celebratePop { 0% { transform: scale(0) rotate(0deg); opacity:0; } 25% { opacity:1; } 55% { transform: scale(1.25) rotate(170deg); opacity:1; } 100% { transform: scale(.85) rotate(340deg); opacity:0; } }
+  @keyframes sparkleTwinkle { 0%,100% { opacity:.25; transform:scale(.7) rotate(0deg); } 50% { opacity:1; transform:scale(1.15) rotate(20deg); } }
 
   /* ENTRY OVERLAY */
   #overlay { position: fixed; inset: 0; z-index: 60; overflow: hidden; background: #f4ecdc; transition: opacity .9s ease; }
@@ -28,9 +29,11 @@
   #overlay.opening .ov-chrome { opacity: 0; }
   .ov-flap { position: absolute; inset: 0; z-index: 2; transition: transform .95s cubic-bezier(.6,0,.2,1), opacity .8s ease .1s; }
   .ov-flap::after { content:''; position:absolute; inset:0; background-image: radial-gradient(rgba(140,108,34,.05) 1px, transparent 1px); background-size: 5px 5px; }
-  .ov-flap.left { background: linear-gradient(120deg,#f8f2e8,#ece2d0); clip-path: polygon(0 0, 0 100%, 50% 50%); box-shadow: inset 0 0 0 1000px transparent; border-right: 1.5px solid rgba(184,146,85,.35); }
-  .ov-flap.right { background: linear-gradient(240deg,#f8f2e8,#ece2d0); clip-path: polygon(100% 0, 100% 100%, 50% 50%); border-left: 1.5px solid rgba(184,146,85,.35); }
-  .ov-flap.bottom { background: linear-gradient(0deg,#f4ecda,#f0e7d4); clip-path: polygon(0 100%, 100% 100%, 50% 50%); border-top: 1.5px solid rgba(184,146,85,.35); }
+  .ov-flap.left { background: linear-gradient(120deg,#6b4a8c,#4f3168); clip-path: polygon(0 0, 0 100%, 50% 50%); box-shadow: inset 0 0 0 1000px transparent; border-right: 1.5px solid rgba(184,146,85,.35); }
+  .ov-flap.right { background: linear-gradient(240deg,#6b4a8c,#4f3168); clip-path: polygon(100% 0, 100% 100%, 50% 50%); border-left: 1.5px solid rgba(184,146,85,.35); }
+  .ov-flap.bottom { background: linear-gradient(0deg,#5f3f7c,#4a2f66); clip-path: polygon(0 100%, 100% 100%, 50% 50%); border-top: 1.5px solid rgba(184,146,85,.35); }
+  .ov-flap.top { background: linear-gradient(180deg,#d9c9ec,#c6aee0); clip-path: polygon(0 0, 100% 0, 50% 50%); border-bottom: 1.5px solid rgba(184,146,85,.35); z-index: 1; }
+  #overlay.opening .ov-flap.top { transform: translateY(-65%); opacity: 0; }
   #overlay.opening .ov-flap.left { transform: translateX(-65%); opacity: 0; }
   #overlay.opening .ov-flap.right { transform: translateX(65%); opacity: 0; }
   #overlay.opening .ov-flap.bottom { transform: translateY(72%); opacity: 0; }
@@ -171,9 +174,13 @@
 
   </div>
 
-  <div style="margin-top:38px;">
+  <div style="margin-top:38px; position:relative;">
+    <span style="position:absolute; left:8%; top:-6px; font-size:13px; color:#c9a24a; animation:sparkleTwinkle 2.1s ease-in-out infinite;">&#10022;</span>
+    <span style="position:absolute; right:10%; top:14px; font-size:10px; color:#b89255; animation:sparkleTwinkle 2.6s ease-in-out infinite .5s;">&#10022;</span>
+    <span style="position:absolute; left:20%; bottom:-4px; font-size:9px; color:#c9a24a; animation:sparkleTwinkle 2.3s ease-in-out infinite 1s;">&#10022;</span>
+    <span style="position:absolute; right:20%; bottom:8px; font-size:12px; color:#b89255; animation:sparkleTwinkle 2.8s ease-in-out infinite 1.4s;">&#10022;</span>
     <div style="color:#c9a24a; font-size:13px; letter-spacing:.3em; margin-bottom:8px;">&#10086;</div>
-    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(20px,5.5vw,28px); color:#6e1b2a; margin:0 auto; max-width:420px; line-height:1.4;">&ldquo;Raised with love, united by destiny&rdquo;</p>
+    <p style="font-family:'Cormorant Garamond',serif; font-weight:700; font-style:italic; font-size:clamp(20px,5.5vw,28px); color:#6e1b2a; margin:0 auto; max-width:420px; line-height:1.4; text-shadow:0 0 18px rgba(201,162,74,.35);">&ldquo;Raised with love, united by destiny&rdquo;</p>
   </div>
 </section>
 
@@ -321,13 +328,14 @@
   <div class="ov-chrome" style="position:absolute; top:12%; left:50%; transform:translateX(-50%); width:74%; max-width:500px; text-align:center; z-index:4;">
     <div style="font-family:'Marcellus',serif; letter-spacing:.32em; text-transform:uppercase; font-size:10.5px; color:#8a7a4e;">How it all began</div>
     <div style="width:42px; height:1px; background:linear-gradient(90deg,transparent,#c9a24a,transparent); margin:11px auto 14px;"></div>
-    <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(18px,5vw,25px); line-height:1.5; color:#3a4a72; margin:0;">&ldquo;From Dhol to Dhak, from Ardaas to Subho Drishti this is our love story.&rdquo;</p>
+    <p style="font-family:'Cormorant Garamond',serif; font-weight:700; font-style:italic; font-size:clamp(18px,5vw,25px); line-height:1.5; color:#3a4a72; margin:0;">&ldquo;From Dhol to Dhak, from Ardaas to Subho Drishti this is our love story.&rdquo;</p>
   </div>
 
   <!-- flash burst on open -->
   <div class="ov-flash"></div>
 
   <!-- envelope flaps -->
+  <div class="ov-flap top"></div>
   <div class="ov-flap bottom"></div>
   <div class="ov-flap left"></div>
   <div class="ov-flap right"></div>
@@ -369,8 +377,8 @@
   <!-- tagline -->
   <div class="ov-chrome" style="position:absolute; bottom:7%; left:50%; transform:translateX(-50%); text-align:center; z-index:4;">
     <div style="color:#c9a24a; font-size:13px; letter-spacing:.3em; margin-bottom:8px;">&#10086;</div>
-    <div style="font-family:'Marcellus',serif; letter-spacing:.34em; text-transform:uppercase; font-size:clamp(12px,3.4vw,15px); color:#6e6a5a;">Our forever begins</div>
-    <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(26px,8vw,40px); color:#6e1b2a; line-height:1.05; margin-top:2px;">together</div>
+    <div style="font-family:'Marcellus',serif; letter-spacing:.34em; text-transform:uppercase; font-size:clamp(12px,3.4vw,15px); color:#ffffff;">Our forever begins</div>
+    <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(26px,8vw,40px); color:#c0334a; line-height:1.05; margin-top:2px;">together</div>
   </div>
 
 </div>
