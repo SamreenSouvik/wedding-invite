@@ -27,14 +27,18 @@
   .ov-chrome { transition: opacity .55s ease; }
   #overlay.opening .ov-chrome { opacity: 0; }
   .ov-flap { position: absolute; inset: 0; z-index: 2; transition: transform .95s cubic-bezier(.6,0,.2,1), opacity .8s ease .1s; }
-  .ov-flap.left { background: linear-gradient(120deg,#f8f2e8,#ece2d0); clip-path: polygon(0 0, 0 100%, 50% 50%); }
-  .ov-flap.right { background: linear-gradient(240deg,#f8f2e8,#ece2d0); clip-path: polygon(100% 0, 100% 100%, 50% 50%); }
-  .ov-flap.bottom { background: linear-gradient(0deg,#f4ecda,#f0e7d4); clip-path: polygon(0 100%, 100% 100%, 50% 50%); }
+  .ov-flap::after { content:''; position:absolute; inset:0; background-image: radial-gradient(rgba(140,108,34,.05) 1px, transparent 1px); background-size: 5px 5px; }
+  .ov-flap.left { background: linear-gradient(120deg,#f8f2e8,#ece2d0); clip-path: polygon(0 0, 0 100%, 50% 50%); box-shadow: inset 0 0 0 1000px transparent; border-right: 1.5px solid rgba(184,146,85,.35); }
+  .ov-flap.right { background: linear-gradient(240deg,#f8f2e8,#ece2d0); clip-path: polygon(100% 0, 100% 100%, 50% 50%); border-left: 1.5px solid rgba(184,146,85,.35); }
+  .ov-flap.bottom { background: linear-gradient(0deg,#f4ecda,#f0e7d4); clip-path: polygon(0 100%, 100% 100%, 50% 50%); border-top: 1.5px solid rgba(184,146,85,.35); }
   #overlay.opening .ov-flap.left { transform: translateX(-65%); opacity: 0; }
   #overlay.opening .ov-flap.right { transform: translateX(65%); opacity: 0; }
   #overlay.opening .ov-flap.bottom { transform: translateY(72%); opacity: 0; }
   .ov-seal { position: absolute; left: 50%; top: 49%; z-index: 5; transform: translate(-50%,-50%) scale(1); opacity: 1; transition: all .8s ease; }
   #overlay.opening .ov-seal { transform: translate(-50%,-50%) scale(1.25); opacity: 0; }
+  .ov-flash { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 49%, #fff 0%, rgba(255,250,230,.95) 22%, rgba(255,230,160,.55) 45%, rgba(255,230,160,0) 70%); }
+  #overlay.opening .ov-flash { animation: envFlash .7s ease-out forwards; }
+  @keyframes envFlash { 0% { opacity: 0; transform: scale(.3); } 18% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(2.4); } }
 
   /* SCRATCH */
   #scratchCanvas { transition: opacity .5s ease; }
@@ -320,10 +324,24 @@
     <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:500; font-size:clamp(18px,5vw,25px); line-height:1.5; color:#3a4a72; margin:0;">&ldquo;From Dhol to Dhak, from Ardaas to Subho Drishti this is our love story.&rdquo;</p>
   </div>
 
+  <!-- flash burst on open -->
+  <div class="ov-flash"></div>
+
   <!-- envelope flaps -->
   <div class="ov-flap bottom"></div>
   <div class="ov-flap left"></div>
   <div class="ov-flap right"></div>
+
+  <!-- corner ornaments -->
+  <svg class="ov-chrome" viewBox="0 0 60 60" style="position:absolute; top:10px; left:10px; width:38px; height:38px; z-index:4; opacity:.75;"><path d="M2 2 L2 22 M2 2 L22 2" fill="none" stroke="#c9a24a" stroke-width="1.4"/><circle cx="2" cy="2" r="2.4" fill="#c9a24a"/></svg>
+  <svg class="ov-chrome" viewBox="0 0 60 60" style="position:absolute; top:10px; right:10px; width:38px; height:38px; z-index:4; opacity:.75; transform:scaleX(-1);"><path d="M2 2 L2 22 M2 2 L22 2" fill="none" stroke="#c9a24a" stroke-width="1.4"/><circle cx="2" cy="2" r="2.4" fill="#c9a24a"/></svg>
+  <svg class="ov-chrome" viewBox="0 0 60 60" style="position:absolute; bottom:10px; left:10px; width:38px; height:38px; z-index:4; opacity:.75; transform:scaleY(-1);"><path d="M2 2 L2 22 M2 2 L22 2" fill="none" stroke="#c9a24a" stroke-width="1.4"/><circle cx="2" cy="2" r="2.4" fill="#c9a24a"/></svg>
+  <svg class="ov-chrome" viewBox="0 0 60 60" style="position:absolute; bottom:10px; right:10px; width:38px; height:38px; z-index:4; opacity:.75; transform:scale(-1,-1);"><path d="M2 2 L2 22 M2 2 L22 2" fill="none" stroke="#c9a24a" stroke-width="1.4"/><circle cx="2" cy="2" r="2.4" fill="#c9a24a"/></svg>
+
+  <!-- postmark stamp, top-right corner -->
+  <div class="ov-chrome" style="position:absolute; top:22px; right:22px; z-index:4; width:52px; height:52px; border:1.4px dashed rgba(110,27,42,.45); border-radius:50%; display:flex; align-items:center; justify-content:center; opacity:.65; transform:rotate(-8deg);">
+    <div style="font-family:'Marcellus',serif; font-size:8px; letter-spacing:.12em; text-transform:uppercase; color:#6e1b2a; text-align:center; line-height:1.3;">Sealed<br>with<br>love</div>
+  </div>
 
   <!-- gold seams -->
   <svg class="ov-chrome" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; z-index:3; pointer-events:none;">
@@ -434,7 +452,7 @@
     { name: 'Mehendi Magic', sub: 'Henna & Music', desc: 'Intricate henna for the bride as music and laughter begin the celebrations.', /* venue: 'The Alcor Hotel', */ accent: '#7a6aa6', img: 'images/MehendiTemplate.jpeg', fullImg: true },
     { name: 'Aiburobhaat', sub: 'Bengali Feast', desc: 'The traditional Bengali pre-wedding feast — a loving farewell to single life.', venue: 'The Alcor Hotel', accent: '#b89255', img: 'images/AiburobhaatTemplate.jpeg', fullImg: true },
     { name: 'Sangeet', sub: 'Songs & Dance', desc: 'An evening of dance, song and joyful performances by both families.', venue: 'The Alcor Hotel', accent: '#6e1b2a', img: 'images/image2.jpeg' },
-    { name: 'Haldi', sub: 'Turmeric Blessing', desc: 'Turmeric blessed upon the couple for a radiant and auspicious glow.', venue: 'The Alcor Hotel', accent: '#c08a2e', img: 'images/image3.jpeg' },
+    { name: 'Haldi', sub: 'Turmeric Blessing', desc: 'Turmeric blessed upon the couple for a radiant and auspicious glow.', venue: 'The Alcor Hotel', accent: '#c08a2e', img: 'images/HaldiTemplate.jpeg', fullImg: true },
     { name: 'Baraat', sub: 'The Procession', desc: "The groom's joyful wedding procession arrives with dhol and dancing.", venue: 'The Alcor Hotel', accent: '#20306b', img: 'images/image4.jpeg' },
     { name: 'Varmala / Phere', sub: 'The Sacred Vows', desc: 'Exchange of garlands and the seven sacred vows around the holy fire.', venue: 'The Alcor Hotel', accent: '#7a6aa6', img: 'images/image1.jpeg' },
     { name: 'Reception', sub: 'Celebration', desc: 'Celebrate the newlyweds with dinner, music and your warmest wishes.', venue: 'Goldfinch Retreat', accent: '#6e1b2a', img: 'images/image2.jpeg' }
@@ -449,6 +467,15 @@
       : 'width:100%; height:158px; object-fit:cover; display:block; background:#e8def8;';
     card.innerHTML = '<img src="' + ev.img + '" alt="' + ev.name + '" loading="lazy" style="' + imgStyle + '">';
     ew.appendChild(card);
+    if (i < events.length - 1) {
+      var divider = document.createElement('div');
+      divider.style.cssText = 'display:flex; align-items:center; justify-content:center; gap:10px; margin:22px 0; opacity:.85;';
+      divider.innerHTML =
+        '<span style="width:34%; max-width:70px; height:1px; background:linear-gradient(90deg,transparent,#b89255);"></span>' +
+        '<span style="font-size:15px; color:' + ev.accent + '; transform:rotate(0deg);">&#10084;</span>' +
+        '<span style="width:34%; max-width:70px; height:1px; background:linear-gradient(90deg,#b89255,transparent);"></span>';
+      ew.appendChild(divider);
+    }
   });
 
   /* ---------- gallery ---------- */
