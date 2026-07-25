@@ -205,7 +205,7 @@
 
     <div style="background:rgba(255,255,255,.62); border:1px solid rgba(184,146,85,.32); border-radius:18px; overflow:hidden; box-shadow:0 10px 30px -20px rgba(80,40,90,.5);">
       <div style="padding:18px 18px 14px;">
-        <div style="font-family:'Marcellus',serif; letter-spacing:.18em; text-transform:uppercase; font-size:10.5px; color:#7a6aa6;">Aiburobhaat · Sangeet · Haldi · Baraat · Phere</div>
+        <div style="font-family:'Marcellus',serif; letter-spacing:.18em; text-transform:uppercase; font-size:10.5px; color:#7a6aa6;">Aiburobhaat · Sangeet · Haldi · Phere</div>
         <h3 style="font-family:'Cormorant Garamond',serif; font-weight:600; font-size:30px; color:#6e1b2a; margin:4px 0 2px;">The Alcor Hotel</h3>
         <div style="font-size:13px; color:#5b5470;">Bistupur, Jamshedpur, Jharkhand 831001</div>
       </div>
@@ -286,10 +286,7 @@
       </div>
     </div>
 
-    <div>
-      <label style="display:block; font-family:'Marcellus',serif; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#5b4f7a; margin-bottom:7px;">A note for the couple</label>
-      <textarea id="rMsg" rows="3" placeholder="Your blessings & wishes..." style="width:100%; box-sizing:border-box; padding:13px 14px; border-radius:11px; border:1px solid rgba(184,146,85,.4); background:rgba(255,255,255,.7); font-family:'Jost',sans-serif; font-size:15px; color:#3a3450; outline:none; resize:vertical;"></textarea>
-    </div>
+    <textarea id="rMsg" style="display:none;"></textarea>
 
     <button type="submit" style="margin-top:4px; padding:15px; border:none; border-radius:12px; background:linear-gradient(135deg,#6e1b2a,#20306b); color:#fff; font-family:'Marcellus',serif; letter-spacing:.18em; text-transform:uppercase; font-size:13px; cursor:pointer; box-shadow:0 12px 28px -14px rgba(110,27,42,.7);">Send Our Blessing &#9670;</button>
   </form>
@@ -306,7 +303,6 @@
   <img src="images/IntialsLogo.png" alt="S&amp;S" style="width:52px; height:52px; border-radius:50%; object-fit:cover; margin-bottom:12px;">
   <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:24px; color:#5d4e86;">Samreen &amp; Souvik</div>
   <div style="font-family:'Marcellus',serif; letter-spacing:.26em; text-transform:uppercase; font-size:10.5px; color:#9a7a3e; margin-top:8px;">Jamshedpur · Bengaluru</div>
-  <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; color:#7a6aa6; margin-top:16px;">#SamVik</div>
   <div style="font-size:11px; color:#a59cb8; margin-top:18px;">Made with love &#9825;</div>
 </footer>
 
@@ -461,7 +457,6 @@
     { name: 'Aiburobhaat', sub: 'Bengali Feast', desc: 'The traditional Bengali pre-wedding feast — a loving farewell to single life.', venue: 'The Alcor Hotel', accent: '#b89255', img: 'images/AiburobhaatTemplate.jpeg', fullImg: true },
     { name: 'Sangeet', sub: 'Songs & Dance', desc: 'An evening of dance, song and joyful performances by both families.', venue: 'The Alcor Hotel', accent: '#6e1b2a', img: 'images/image2.jpeg' },
     { name: 'Haldi', sub: 'Turmeric Blessing', desc: 'Turmeric blessed upon the couple for a radiant and auspicious glow.', venue: 'The Alcor Hotel', accent: '#c08a2e', img: 'images/HaldiTemplate.jpeg', fullImg: true },
-    { name: 'Baraat', sub: 'The Procession', desc: "The groom's joyful wedding procession arrives with dhol and dancing.", venue: 'The Alcor Hotel', accent: '#20306b', img: 'images/image4.jpeg' },
     { name: 'Varmaala/Phere', sub: 'The Sacred Vows', desc: 'Exchange of garlands and the seven sacred vows around the holy fire.', venue: 'The Alcor Hotel', accent: '#7a6aa6', img: 'images/image1.jpeg' },
     { name: 'Reception', sub: 'Celebration', desc: 'Celebrate the newlyweds with dinner, music and your warmest wishes.', venue: 'Goldfinch Retreat', accent: '#6e1b2a', img: 'images/image2.jpeg' }
   ];
@@ -517,7 +512,8 @@
   paintAttend();
 
   var chipWrap = document.getElementById('eventChips');
-  events.forEach(function (ev) {
+  var rsvpEvents = events.filter(function (ev) { return ['Sangeet', 'Varmaala/Phere', 'Reception'].indexOf(ev.name) >= 0; });
+  rsvpEvents.forEach(function (ev) {
     var chip = document.createElement('div');
     function paint() {
       var on = selectedEvents.indexOf(ev.name) >= 0;
@@ -550,57 +546,15 @@
   var form = document.getElementById('rsvpForm');
   var thanks = document.getElementById('rsvpThanks');
 
-  /* ---------- Google Form submission (RSVPs land in the linked Sheet) ---------- */
-  var GFORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSd3VflEfofDnTEg9CG3zKOIm1nY_5Ro3bN9gUSqJXiYA_yUpA/formResponse';
-  var GFORM_ENTRIES = {
-    name: 'entry.730336381',
-    attending: 'entry.1484986583',
-    guests: 'entry.1466424937',
-    events: 'entry.624498498',
-    msg: 'entry.138570727'
-  };
+  /* ---------- RSVP submission via Google Apps Script Web App ---------- */
+  var GSCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHDjaAPj4vE7wEpQnvpUk5Rcv7fN7dZmi3VTzoInQseP3s9Iqj_hQ1cOTCF49Y5dOl/exec';
   function submitToGoogleForm(entry) {
-    var params = new URLSearchParams();
-    params.append(GFORM_ENTRIES.name, entry.name);
-    params.append(GFORM_ENTRIES.attending, entry.attending === 'yes' ? 'Yes' : 'No');
-    params.append(GFORM_ENTRIES.guests, String(entry.guests));
-    entry.events.forEach(function (ev) { params.append(GFORM_ENTRIES.events, ev); });
-    params.append(GFORM_ENTRIES.msg, entry.msg);
-    params.append('pageHistory', '0');
-    params.append('fvv', '1');
-
-    fetch(GFORM_ACTION, { method: 'POST', mode: 'no-cors', body: params }).catch(function () {});
-
-    /* fallback: hidden iframe form-post, in case fetch is blocked */
-    var iframe = document.getElementById('gformFrame');
-    if (!iframe) {
-      iframe = document.createElement('iframe');
-      iframe.name = 'gformFrame';
-      iframe.id = 'gformFrame';
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-    }
-    var f = document.createElement('form');
-    f.action = GFORM_ACTION;
-    f.method = 'POST';
-    f.target = 'gformFrame';
-    f.style.display = 'none';
-    function addField(entryId, value) {
-      var inp = document.createElement('input');
-      inp.type = 'hidden';
-      inp.name = entryId;
-      inp.value = value;
-      f.appendChild(inp);
-    }
-    addField(GFORM_ENTRIES.name, entry.name);
-    addField(GFORM_ENTRIES.attending, entry.attending === 'yes' ? 'Yes' : 'No');
-    addField(GFORM_ENTRIES.guests, String(entry.guests));
-    entry.events.forEach(function (ev) { addField(GFORM_ENTRIES.events, ev); });
-    addField(GFORM_ENTRIES.msg, entry.msg);
-    addField('pageHistory', '0');
-    document.body.appendChild(f);
-    f.submit();
-    setTimeout(function () { f.remove(); }, 1000);
+    fetch(GSCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ name: entry.name, attending: entry.attending === 'yes' ? 'Yes' : 'No', guests: entry.guests, events: entry.events, msg: entry.msg })
+    }).catch(function () {});
   }
 
   form.addEventListener('submit', function (e) {
