@@ -39,6 +39,12 @@
   #overlay.opening .ov-flap.bottom { transform: translateY(72%); opacity: 0; }
   .ov-seal { position: absolute; left: 50%; top: 49%; z-index: 5; transform: translate(-50%,-50%) scale(1); opacity: 1; transition: all .8s ease; }
   #overlay.opening .ov-seal { transform: translate(-50%,-50%) scale(1.25); opacity: 0; }
+  @keyframes tapNudge { 0%,100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(-5px); opacity: 1; } }
+  @keyframes tapBreathe { 0%,100% { opacity: .75; letter-spacing: .3em; } 50% { opacity: 1; letter-spacing: .36em; } }
+  @media (max-width: 480px) {
+    .ov-quote { width: 82% !important; }
+    .ov-quote-p { font-size: 13.5px !important; line-height: 1.45 !important; }
+  }
   .ov-flash { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 49%, #fff 0%, rgba(255,250,230,.95) 22%, rgba(255,230,160,.55) 45%, rgba(255,230,160,0) 70%); }
   #overlay.opening .ov-flash { animation: envFlash .7s ease-out forwards; }
   @keyframes envFlash { 0% { opacity: 0; transform: scale(.3); } 18% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(2.4); } }
@@ -344,10 +350,10 @@
   </div>
 
   <!-- quote in the opening -->
-  <div class="ov-chrome" style="position:absolute; top:13%; left:50%; transform:translateX(-50%); width:58%; max-width:400px; text-align:center; z-index:4;">
+  <div class="ov-chrome ov-quote" style="position:absolute; top:13%; left:50%; transform:translateX(-50%); width:58%; max-width:400px; text-align:center; z-index:4;">
     <div style="font-family:'Marcellus',serif; letter-spacing:.32em; text-transform:uppercase; font-size:10.5px; color:#8a7a4e;">How it all began</div>
     <div style="width:42px; height:1px; background:linear-gradient(90deg,transparent,#c9a24a,transparent); margin:11px auto 14px;"></div>
-    <p style="font-family:'Cormorant Garamond',serif; font-weight:700; font-style:italic; font-size:clamp(14px,4vw,25px); line-height:1.5; color:#3a4a72; margin:0;">&ldquo;From Dhol to Dhak, from Ardaas to Subho Drishti this is our love story.&rdquo;</p>
+    <p class="ov-quote-p" style="font-family:'Cormorant Garamond',serif; font-weight:700; font-style:italic; font-size:clamp(14px,4vw,25px); line-height:1.5; color:#3a4a72; margin:0;">&ldquo;From Dhol to Dhak, from Ardaas to Subho Drishti this is our love story.&rdquo;</p>
   </div>
 
   <!-- flash burst on open -->
@@ -389,6 +395,11 @@
           <path d="M50 85 C50 85 7 57 7 28 C7 12 19 5 31 5 C41 5 47 12 50 20 C53 12 59 5 69 5 C81 5 93 12 93 28 C93 57 50 85 50 85 Z" fill="none" stroke="#f8ecc2" stroke-width="1.2" opacity=".55" transform="translate(50 45) scale(.84) translate(-50 -45)"/>
         </svg>
         <img src="images/IntialsLogo.png" alt="Play our song" style="position:absolute; left:50%; top:41%; transform:translate(-50%,-50%); width:45%; aspect-ratio:1/1; border-radius:50%; object-fit:cover; box-shadow:0 0 0 3px rgba(248,236,194,.85), 0 5px 12px -3px rgba(0,0,0,.45);">
+      </div>
+      <!-- tap hint -->
+      <div style="position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:14px; text-align:center; white-space:nowrap; pointer-events:none;">
+        <svg viewBox="0 0 24 14" width="16" height="10" style="display:block; margin:0 auto 5px; animation:tapNudge 1.6s ease-in-out infinite;"><path d="M3 12 L12 3 L21 12" fill="none" stroke="#f8ecc2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div style="font-family:'Marcellus',serif; text-transform:uppercase; font-size:clamp(11px,3vw,13px); letter-spacing:.3em; color:#f8ecc2; text-shadow:0 1px 6px rgba(0,0,0,.45); animation:tapBreathe 1.6s ease-in-out infinite;">Tap here</div>
       </div>
     </button>
   </div>
